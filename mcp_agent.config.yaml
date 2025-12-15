@@ -1,0 +1,98 @@
+$schema: ./schema/mcp-agent.config.schema.json
+default_search_server: bocha-mcp
+document_segmentation:
+  enabled: false
+  size_threshold_chars: 50000
+execution_engine: asyncio
+logger:
+  level: info
+  path_settings:
+    path_pattern: logs/mcp-agent-{unique_id}.jsonl
+    timestamp_format: '%Y%m%d_%H%M%S'
+    unique_id: timestamp
+  progress_display: true
+  transports:
+  - console
+  - file
+mcp:
+  servers:
+    bocha-mcp:
+      args:
+      - /Users/thj/Documents/学习/相关学习资料/相关学习资料/AI/project/DeepCode/tools/bocha_search_server.py
+      command: /Users/thj/Documents/学习/相关学习资料/相关学习资料/AI/project/DeepCode/.venv/bin/python
+      env:
+        BOCHA_API_KEY: sk-c305d8000c0645d1861147114981aad9
+        PYTHONPATH: /Users/thj/Documents/学习/相关学习资料/相关学习资料/AI/project/DeepCode
+    brave:
+      args:
+      - /Users/thj/Documents/学习/相关学习资料/相关学习资料/AI/project/DeepCode/tools/bocha_search_server.py
+      command: /Users/thj/Documents/学习/相关学习资料/相关学习资料/AI/project/DeepCode/.venv/bin/python
+      env:
+        BOCHA_API_KEY: sk-c305d8000c0645d1861147114981aad9
+        PYTHONPATH: /Users/thj/Documents/学习/相关学习资料/相关学习资料/AI/project/DeepCode
+    filesystem:
+      args:
+      - -y
+      - '@modelcontextprotocol/server-filesystem'
+      - .
+      command: npx
+    code-implementation:
+      args:
+      - /Users/thj/Documents/学习/相关学习资料/相关学习资料/AI/project/DeepCode/tools/code_implementation_server.py
+      command: /Users/thj/Documents/学习/相关学习资料/相关学习资料/AI/project/DeepCode/.venv/bin/python
+      description: Paper code reproduction tool server - provides file operations,
+        code execution, search and other functions
+      env:
+        PYTHONPATH: /Users/thj/Documents/学习/相关学习资料/相关学习资料/AI/project/DeepCode
+    code-reference-indexer:
+      args:
+      - /Users/thj/Documents/学习/相关学习资料/相关学习资料/AI/project/DeepCode/tools/code_reference_indexer.py
+      command: /Users/thj/Documents/学习/相关学习资料/相关学习资料/AI/project/DeepCode/.venv/bin/python
+      description: Code reference indexer server - Provides intelligent code reference
+        search from indexed repositories
+      env:
+        PYTHONPATH: /Users/thj/Documents/学习/相关学习资料/相关学习资料/AI/project/DeepCode
+    command-executor:
+      args:
+      - /Users/thj/Documents/学习/相关学习资料/相关学习资料/AI/project/DeepCode/tools/command_executor.py
+      command: /Users/thj/Documents/学习/相关学习资料/相关学习资料/AI/project/DeepCode/.venv/bin/python
+      env:
+        PYTHONPATH: /Users/thj/Documents/学习/相关学习资料/相关学习资料/AI/project/DeepCode
+    document-segmentation:
+      args:
+      - /Users/thj/Documents/学习/相关学习资料/相关学习资料/AI/project/DeepCode/tools/document_segmentation_server.py
+      command: /Users/thj/Documents/学习/相关学习资料/相关学习资料/AI/project/DeepCode/.venv/bin/python
+      description: Document segmentation server - Provides intelligent document analysis
+        and segmented reading to optimize token usage
+      env:
+        PYTHONPATH: /Users/thj/Documents/学习/相关学习资料/相关学习资料/AI/project/DeepCode
+    fetch:
+      args:
+      - mcp-server-fetch
+      command: uvx
+    file-downloader:
+      args:
+      - /Users/thj/Documents/学习/相关学习资料/相关学习资料/AI/project/DeepCode/tools/pdf_downloader.py
+      command: /Users/thj/Documents/学习/相关学习资料/相关学习资料/AI/project/DeepCode/.venv/bin/python
+      env:
+        PYTHONPATH: /Users/thj/Documents/学习/相关学习资料/相关学习资料/AI/project/DeepCode
+    github-downloader:
+      args:
+      - /Users/thj/Documents/学习/相关学习资料/相关学习资料/AI/project/DeepCode/tools/git_command.py
+      command: /Users/thj/Documents/学习/相关学习资料/相关学习资料/AI/project/DeepCode/.venv/bin/python
+      env:
+        PYTHONPATH: /Users/thj/Documents/学习/相关学习资料/相关学习资料/AI/project/DeepCode
+llm_provider: anthropic
+openai:
+  base_max_tokens: 32768
+  default_model: qwen-plus
+  reasoning_effort: low
+  max_tokens_policy: adaptive
+  retry_max_tokens: 32768
+google:
+  default_model: gemini-3-pro-preview
+anthropic:
+  default_model: claude-3-5-haiku-20241022
+  base_max_tokens: 7000
+  retry_max_tokens: 6000
+planning_mode: traditional

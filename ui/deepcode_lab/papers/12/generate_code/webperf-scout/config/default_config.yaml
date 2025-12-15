@@ -1,0 +1,93 @@
+###############################################
+# WebPerf Scout - Default Configuration
+# Last Updated: 2025-12-12
+###############################################
+
+# Global Performance Testing Configuration
+global:
+  # Default timeout for performance tests (in milliseconds)
+  default_timeout: 30000
+  
+  # Logging configuration
+  logging:
+    level: info
+    output_path: ./logs/webperf-scout.log
+
+# Crawler Configuration
+crawler:
+  # Default URL discovery parameters
+  max_depth: 2
+  max_pages: 30
+  allowed_domains: []  # Empty means no domain restrictions
+  
+  # Crawling behavior
+  follow_robots_txt: true
+  respect_nofollow: true
+
+# Performance Testing Configuration
+performance:
+  # Web Vitals Thresholds
+  thresholds:
+    largest_contentful_paint: 2500  # ms
+    first_contentful_paint: 1800    # ms
+    time_to_interactive: 3500       # ms
+    cumulative_layout_shift: 0.1    # score
+    total_blocking_time: 300        # ms
+
+  # Browser Configuration
+  browsers:
+    - chromium
+    - firefox
+  
+  # Device Emulation
+  devices:
+    - mobile
+    - desktop
+
+# Network Simulation
+network:
+  # Predefined network conditions
+  conditions:
+    - name: "3G Slow"
+      download_speed: 1.6  # Mbps
+      upload_speed: 0.8    # Mbps
+      latency: 300         # ms
+    
+    - name: "4G"
+      download_speed: 10   # Mbps
+      upload_speed: 5      # Mbps
+      latency: 50          # ms
+
+# Reporting Configuration
+reporting:
+  # Output formats
+  formats:
+    - html
+    - json
+    - csv
+  
+  # Performance score calculation weights
+  score_weights:
+    lcp: 0.25
+    fcp: 0.15
+    tti: 0.15
+    tbt: 0.15
+    cls: 0.15
+    overall_score_threshold: 90  # Minimum acceptable score
+
+# Advanced Configuration
+advanced:
+  # Parallel testing configuration
+  max_concurrent_tests: 4
+  
+  # Retry mechanism for failed tests
+  retry_attempts: 2
+  retry_delay: 1000  # ms between retries
+
+# Security Configuration
+security:
+  # SSL/TLS verification
+  verify_ssl: true
+  
+  # User-Agent configuration
+  user_agent: "WebPerf Scout Performance Analyzer/1.0"

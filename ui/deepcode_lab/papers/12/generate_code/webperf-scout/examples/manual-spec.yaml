@@ -1,0 +1,80 @@
+---
+# WebPerf Scout - Manual Performance Testing Specification
+# This example demonstrates a comprehensive manual performance test configuration
+
+# Global Test Configuration
+global:
+  name: "Manual Performance Test"
+  description: "Performance analysis for a single target website"
+  timeout: 120  # Total test timeout in seconds
+  log_level: "info"
+
+# Target URL Configuration
+target:
+  url: "https://example.com"
+  mode: "single"  # Single URL testing mode
+
+# Performance Testing Parameters
+performance:
+  # Web Vitals Thresholds
+  thresholds:
+    largest_contentful_paint:
+      max_time: 2500  # milliseconds
+      weight: 0.25
+    first_contentful_paint:
+      max_time: 1800  # milliseconds
+      weight: 0.15
+    time_to_interactive:
+      max_time: 3500  # milliseconds
+      weight: 0.20
+    cumulative_layout_shift:
+      max_score: 0.1
+      weight: 0.15
+    total_blocking_time:
+      max_time: 300  # milliseconds
+      weight: 0.25
+
+# Browser and Device Configuration
+browser:
+  type: "chromium"  # Supported: chromium, firefox, webkit
+  viewport:
+    width: 1920
+    height: 1080
+  device_emulation: "desktop"  # Options: desktop, mobile, tablet
+
+# Network Simulation
+network:
+  preset: "4g"  # Simulated network conditions
+  latency: 50   # Additional network latency in ms
+  download_speed: 1.6  # Mbps
+  upload_speed: 0.75   # Mbps
+
+# Advanced Testing Options
+advanced:
+  retry_attempts: 2
+  parallel_runs: 3
+  collect_screenshots: true
+  har_logging: false
+
+# Reporting Configuration
+reporting:
+  formats:
+    - "json"
+    - "html"
+    - "console"
+  output_directory: "./performance_reports"
+  score_calculation:
+    baseline: 100
+    penalty_multiplier: 0.8
+
+# Security and Privacy
+security:
+  user_agent: "WebPerfScout/1.0"
+  ssl_verification: true
+  proxy: null  # Optional proxy configuration
+
+# Optional Monitoring and Alerts
+monitoring:
+  enabled: false
+  threshold_alert_email: null
+  slack_webhook: null
