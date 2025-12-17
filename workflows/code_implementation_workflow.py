@@ -34,7 +34,6 @@ from workflows.agents import CodeImplementationAgent
 from workflows.agents.memory_agent_concise import ConciseMemoryAgent
 from config.mcp_tool_definitions import get_mcp_tools
 from utils.llm_utils import get_preferred_llm_class, get_default_models
-from utils.config_path import get_secrets_path, get_config_path
 # DialogueLogger removed - no longer needed
 
 
@@ -50,14 +49,11 @@ class CodeImplementationWorkflow:
 
     # ==================== 1. Class Initialization and Configuration (Infrastructure Layer) ====================
 
-    def __init__(self, config_path: str = None):
+    def __init__(self, config_path: str = "mcp_agent.secrets.yaml"):
         """Initialize workflow with configuration"""
-        # Use absolute path if not provided
-        if config_path is None:
-            config_path = get_secrets_path()
         self.config_path = config_path
         self.api_config = self._load_api_config()
-        self.default_models = get_default_models()  # Uses absolute path internally
+        self.default_models = get_default_models("mcp_agent.config.yaml")
         self.logger = self._create_logger()
         self.mcp_agent = None
         self.enable_read_tools = (

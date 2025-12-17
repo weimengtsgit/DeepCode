@@ -1,4 +1,3 @@
-import logging
 import os
 import sys
 import json
@@ -61,8 +60,8 @@ async def bocha_web_search(
             "BOCHA_API_KEY environment variable."
         )
 
-    # Endpoint https://api.bocha.cn/v1/web-search
-    endpoint = "https://api.bocha.cn/v1/web-search"
+    # Endpoint
+    endpoint = "https://api.bochaai.com/v1/web-search?utm_source=bocha-mcp-local"
 
     try:
         payload = {
@@ -77,7 +76,6 @@ async def bocha_web_search(
             "Content-Type": "application/json",
         }
 
-        logging.info("=======[Bocha Search] Sending request to Bocha API")
         async with httpx.AsyncClient() as client:
             response = await client.post(
                 endpoint, headers=headers, json=payload, timeout=10.0

@@ -25,7 +25,6 @@ from typing import List, Dict, Any
 
 # MCP Agent imports for LLM
 from utils.llm_utils import get_preferred_llm_class, get_default_models
-from utils.config_path import get_secrets_path, get_config_path
 
 
 @dataclass
@@ -74,19 +73,16 @@ class CodeIndexer:
         code_base_path: str = None,
         target_structure: str = None,
         output_dir: str = None,
-        config_path: str = None,
+        config_path: str = "mcp_agent.secrets.yaml",
         indexer_config_path: str = None,
         enable_pre_filtering: bool = True,
     ):
         # Load configurations first
-        # Use absolute paths if not provided
-        if config_path is None:
-            config_path = get_secrets_path()
         self.config_path = config_path
         self.indexer_config_path = indexer_config_path
         self.api_config = self._load_api_config()
         self.indexer_config = self._load_indexer_config()
-        self.default_models = get_default_models()  # Uses absolute path internally
+        self.default_models = get_default_models("mcp_agent.config.yaml")
 
         # Use config paths if not provided as parameters
         paths_config = self.indexer_config.get("paths", {})

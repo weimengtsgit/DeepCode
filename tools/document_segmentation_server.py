@@ -1459,7 +1459,6 @@ async def analyze_and_segment_document(
     """
     try:
         # Find markdown file in paper directory
-        logging.info(f"=======[Document Segmentation] Analyzing document in {paper_dir}")
         md_files = [f for f in os.listdir(paper_dir) if f.endswith(".md")]
         if not md_files:
             return json.dumps(
