@@ -9,22 +9,13 @@ import os
 import yaml
 from typing import Any, Type, Dict, Tuple
 
-# Import config path utilities
-from utils.config_path import get_config_path, get_secrets_path
-
 # Import LLM classes
 from mcp_agent.workflows.llm.augmented_llm_anthropic import AnthropicAugmentedLLM
 from mcp_agent.workflows.llm.augmented_llm_openai import OpenAIAugmentedLLM
-# Google LLM module not available in current mcp_agent version
-try:
-    from mcp_agent.workflows.llm.augmented_llm_google import GoogleAugmentedLLM
-    GOOGLE_AVAILABLE = True
-except ImportError:
-    GOOGLE_AVAILABLE = False
-    GoogleAugmentedLLM = None
+from mcp_agent.workflows.llm.augmented_llm_google import GoogleAugmentedLLM
 
 
-def get_preferred_llm_class(config_path: str = None) -> Type[Any]:
+def get_preferred_llm_class(config_path: str = "mcp_agent.secrets.yaml") -> Type[Any]:
     """
     Select the LLM class based on user preference and API key availability.
 
@@ -34,16 +25,12 @@ def get_preferred_llm_class(config_path: str = None) -> Type[Any]:
     3. Fallback to first available provider
 
     Args:
-        config_path: Path to the secrets YAML configuration file (uses absolute path if None)
+        config_path: Path to the secrets YAML configuration file
 
     Returns:
         class: The preferred LLM class
     """
     try:
-        # Use absolute path if not provided
-        if config_path is None:
-            config_path = get_secrets_path()
-
         # Read API keys from secrets file
         if not os.path.exists(config_path):
             print(f"🤖 Config file {config_path} not found, using OpenAIAugmentedLLM")
@@ -58,7 +45,7 @@ def get_preferred_llm_class(config_path: str = None) -> Type[Any]:
         openai_key = secrets.get("openai", {}).get("api_key", "").strip()
 
         # Read user preference from main config
-        main_config_path = get_config_path()
+        main_config_path = "mcp_agent.config.yaml"
         preferred_provider = None
         if os.path.exists(main_config_path):
             with open(main_config_path, "r", encoding="utf-8") as f:
@@ -72,12 +59,9 @@ def get_preferred_llm_class(config_path: str = None) -> Type[Any]:
                 anthropic_key,
                 "AnthropicAugmentedLLM",
             ),
+            "google": (GoogleAugmentedLLM, google_key, "GoogleAugmentedLLM"),
             "openai": (OpenAIAugmentedLLM, openai_key, "OpenAIAugmentedLLM"),
         }
-        
-        # Only add Google if available
-        if GOOGLE_AVAILABLE and GoogleAugmentedLLM is not None:
-            provider_map["google"] = (GoogleAugmentedLLM, google_key, "GoogleAugmentedLLM")
 
         # Try user's preferred provider first
         if preferred_provider and preferred_provider in provider_map:
@@ -106,12 +90,12 @@ def get_preferred_llm_class(config_path: str = None) -> Type[Any]:
         return OpenAIAugmentedLLM
 
 
-def get_token_limits(config_path: str = None) -> Tuple[int, int]:
+def get_token_limits(config_path: str = "mcp_agent.config.yaml") -> Tuple[int, int]:
     """
-    Get token limits from configuration based on the current LLM provider.
+    Get token limits from configuration.
 
     Args:
-        config_path: Path to the main configuration file (uses absolute path if None)
+        config_path: Path to the main configuration file
 
     Returns:
         tuple: (base_max_tokens, retry_max_tokens)
@@ -121,31 +105,10 @@ def get_token_limits(config_path: str = None) -> Tuple[int, int]:
     default_retry = 15000
 
     try:
-        # Use absolute path if not provided
-        if config_path is None:
-            config_path = get_config_path()
-
         if os.path.exists(config_path):
             with open(config_path, "r", encoding="utf-8") as f:
                 config = yaml.safe_load(f)
 
-            # Get the current LLM provider preference
-            preferred_provider = config.get("llm_provider", "openai").strip().lower()
-
-            # Get token limits based on provider
-            provider_config = config.get(preferred_provider, {})
-            if provider_config:
-                base_tokens = provider_config.get("base_max_tokens")
-                retry_tokens = provider_config.get("retry_max_tokens")
-
-                # If provider-specific limits found, use them
-                if base_tokens is not None and retry_tokens is not None:
-                    print(
-                        f"⚙️ Token limits from config ({preferred_provider}): base={base_tokens}, retry={retry_tokens}"
-                    )
-                    return base_tokens, retry_tokens
-
-            # Fallback to openai config for backward compatibility
             openai_config = config.get("openai", {})
             base_tokens = openai_config.get("base_max_tokens", default_base)
             retry_tokens = openai_config.get("retry_max_tokens", default_retry)
@@ -167,21 +130,17 @@ def get_token_limits(config_path: str = None) -> Tuple[int, int]:
         return default_base, default_retry
 
 
-def get_default_models(config_path: str = None):
+def get_default_models(config_path: str = "mcp_agent.config.yaml"):
     """
     Get default models from configuration file.
 
     Args:
-        config_path: Path to the configuration file (uses absolute path if None)
+        config_path: Path to the configuration file
 
     Returns:
         dict: Dictionary with 'anthropic', 'openai', and 'google' default models
     """
     try:
-        # Use absolute path if not provided
-        if config_path is None:
-            config_path = get_config_path()
-
         if os.path.exists(config_path):
             with open(config_path, "r", encoding="utf-8") as f:
                 config = yaml.safe_load(f)
@@ -220,22 +179,18 @@ def get_default_models(config_path: str = None):
 
 
 def get_document_segmentation_config(
-    config_path: str = None,
+    config_path: str = "mcp_agent.config.yaml",
 ) -> Dict[str, Any]:
     """
     Get document segmentation configuration from config file.
 
     Args:
-        config_path: Path to the main configuration file (uses absolute path if None)
+        config_path: Path to the main configuration file
 
     Returns:
         Dict containing segmentation configuration with default values
     """
     try:
-        # Use absolute path if not provided
-        if config_path is None:
-            config_path = get_config_path()
-
         if os.path.exists(config_path):
             with open(config_path, "r", encoding="utf-8") as f:
                 config = yaml.safe_load(f)
@@ -259,14 +214,14 @@ def get_document_segmentation_config(
 
 
 def should_use_document_segmentation(
-    document_content: str, config_path: str = None
+    document_content: str, config_path: str = "mcp_agent.config.yaml"
 ) -> Tuple[bool, str]:
     """
     Determine whether to use document segmentation based on configuration and document size.
 
     Args:
         document_content: The content of the document to analyze
-        config_path: Path to the configuration file (uses absolute path if None)
+        config_path: Path to the configuration file
 
     Returns:
         Tuple of (should_segment, reason) where:

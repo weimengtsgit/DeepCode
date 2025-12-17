@@ -1,0 +1,368 @@
+// ============================================================================
+// DESIGN SYSTEM VARIABLES
+// ============================================================================
+// Central repository of design tokens for the Observability Monitoring Platform
+// All colors, spacing, typography, and other design constants defined here
+// ============================================================================
+
+// ============================================================================
+// COLOR PALETTE - Dark Theme (Primary)
+// ============================================================================
+
+// Backgrounds
+$color-bg-primary: #0b0c0e;           // Main background (darkest)
+$color-bg-secondary: #181b1f;         // Secondary background (cards, panels)
+$color-bg-tertiary: #242a33;          // Tertiary background (hover states)
+$color-bg-overlay: rgba(11, 12, 14, 0.8);  // Semi-transparent overlay
+
+// Text Colors
+$color-text-primary: #d8d9da;         // Primary text (high contrast)
+$color-text-secondary: #a8adb5;       // Secondary text (lower contrast)
+$color-text-tertiary: #7a8190;        // Tertiary text (lowest contrast)
+$color-text-disabled: #4a5260;        // Disabled text
+
+// Borders
+$color-border: #3a4150;               // Primary border
+$color-border-light: #2a3140;         // Light border (subtle)
+$color-border-dark: #4a5260;          // Dark border (prominent)
+
+// Status Colors
+$color-success: #73bf69;              // Success/healthy (green)
+$color-warning: #ff9830;              // Warning/degraded (orange)
+$color-error: #f2495c;                // Error/critical (red)
+$color-info: #3274d9;                 // Info/neutral (blue)
+
+// Semantic Colors
+$color-primary: #3274d9;              // Primary action color (blue)
+$color-primary-hover: #2563c4;        // Primary hover state
+$color-primary-active: #1a4db8;       // Primary active state
+$color-primary-alpha: rgba(50, 116, 217, 0.1);  // Primary with transparency
+
+// Additional Status Colors
+$color-critical: #f2495c;             // Critical alert (red)
+$color-healthy: #73bf69;              // Healthy status (green)
+$color-degraded: #ff9830;             // Degraded status (orange)
+$color-unknown: #7a8190;              // Unknown status (gray)
+
+// ============================================================================
+// SPACING SYSTEM (8px base grid)
+// ============================================================================
+
+$spacing-xs: 4px;                     // Extra small (1/2 unit)
+$spacing-sm: 8px;                     // Small (1 unit)
+$spacing-md: 16px;                    // Medium (2 units)
+$spacing-lg: 24px;                    // Large (3 units)
+$spacing-xl: 32px;                    // Extra large (4 units)
+$spacing-2xl: 48px;                   // 2x large (6 units)
+$spacing-3xl: 64px;                   // 3x large (8 units)
+
+// Shorthand aliases
+$gap-xs: $spacing-xs;
+$gap-sm: $spacing-sm;
+$gap-md: $spacing-md;
+$gap-lg: $spacing-lg;
+$gap-xl: $spacing-xl;
+
+// ============================================================================
+// TYPOGRAPHY
+// ============================================================================
+
+// Font Families
+$font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+$font-family-mono: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+
+// Font Sizes
+$font-size-xs: 12px;                  // Extra small text
+$font-size-sm: 14px;                  // Small text
+$font-size-base: 14px;                // Base/body text
+$font-size-md: 16px;                  // Medium text
+$font-size-lg: 18px;                  // Large text
+$font-size-xl: 20px;                  // Extra large text
+$font-size-2xl: 24px;                 // 2x large text
+$font-size-3xl: 32px;                 // 3x large text
+
+// Font Weights
+$font-weight-light: 300;              // Light weight
+$font-weight-normal: 400;             // Normal weight
+$font-weight-medium: 500;             // Medium weight
+$font-weight-semibold: 600;           // Semibold weight
+$font-weight-bold: 700;               // Bold weight
+
+// Line Heights
+$line-height-tight: 1.2;              // Tight line height (headings)
+$line-height-normal: 1.5;             // Normal line height (body)
+$line-height-relaxed: 1.75;           // Relaxed line height (long text)
+
+// Letter Spacing
+$letter-spacing-tight: -0.5px;        // Tight letter spacing
+$letter-spacing-normal: 0;            // Normal letter spacing
+$letter-spacing-wide: 0.5px;          // Wide letter spacing
+
+// ============================================================================
+// SHADOWS
+// ============================================================================
+
+$shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+$shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+$shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+$shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
+$shadow-2xl: 0 25px 50px rgba(0, 0, 0, 0.25);
+
+// Elevation shadows (for cards, modals)
+$shadow-elevation-1: 0 2px 4px rgba(0, 0, 0, 0.1);
+$shadow-elevation-2: 0 4px 8px rgba(0, 0, 0, 0.15);
+$shadow-elevation-3: 0 8px 16px rgba(0, 0, 0, 0.2);
+
+// ============================================================================
+// BORDER RADIUS
+// ============================================================================
+
+$border-radius-sm: 4px;               // Small radius
+$border-radius-md: 6px;               // Medium radius
+$border-radius-lg: 8px;               // Large radius
+$border-radius-xl: 12px;              // Extra large radius
+$border-radius-full: 9999px;          // Full circle/pill
+
+// ============================================================================
+// TRANSITIONS & ANIMATIONS
+// ============================================================================
+
+$transition-fast: 150ms ease-in-out;
+$transition-normal: 300ms ease-in-out;
+$transition-slow: 500ms ease-in-out;
+
+$transition-property-color: color, background-color, border-color;
+$transition-property-transform: transform, opacity;
+$transition-property-all: all;
+
+// ============================================================================
+// Z-INDEX SCALE
+// ============================================================================
+
+$z-index-dropdown: 1000;              // Dropdown menus
+$z-index-sticky: 1020;                // Sticky elements
+$z-index-fixed: 1030;                 // Fixed elements
+$z-index-modal-backdrop: 1040;        // Modal backdrop
+$z-index-modal: 1050;                 // Modal dialogs
+$z-index-popover: 1060;               // Popovers
+$z-index-tooltip: 1070;               // Tooltips
+$z-index-notification: 1080;          // Notifications
+
+// ============================================================================
+// BREAKPOINTS (Mobile-first responsive design)
+// ============================================================================
+
+$breakpoint-xs: 320px;                // Extra small devices
+$breakpoint-sm: 480px;                // Small devices (phones)
+$breakpoint-md: 768px;                // Medium devices (tablets)
+$breakpoint-lg: 1024px;               // Large devices (small laptops)
+$breakpoint-xl: 1400px;               // Extra large (standard laptops)
+$breakpoint-2xl: 1920px;              // 2x large (wide monitors)
+$breakpoint-3xl: 2560px;              // 3x large (ultra-wide monitors)
+
+// ============================================================================
+// LAYOUT DIMENSIONS
+// ============================================================================
+
+// Header
+$header-height: 60px;
+$header-padding: $spacing-md;
+$header-border-width: 1px;
+
+// Sidebar
+$sidebar-width-expanded: 260px;
+$sidebar-width-collapsed: 80px;
+$sidebar-transition: width 0.3s ease;
+
+// Grid System
+$grid-columns: 12;
+$grid-gap: $spacing-md;
+$grid-cell-height: 60px;
+
+// Container
+$container-max-width: 1920px;
+$container-padding: $spacing-lg;
+
+// ============================================================================
+// FORM ELEMENTS
+// ============================================================================
+
+// Input Heights
+$input-height-sm: 32px;
+$input-height-md: 40px;
+$input-height-lg: 48px;
+
+// Input Padding
+$input-padding-x: $spacing-md;
+$input-padding-y: $spacing-sm;
+
+// Button Heights
+$button-height-sm: 32px;
+$button-height-md: 40px;
+$button-height-lg: 48px;
+
+// Button Padding
+$button-padding-x-sm: $spacing-sm;
+$button-padding-x-md: $spacing-md;
+$button-padding-x-lg: $spacing-lg;
+
+// ============================================================================
+// OPACITY SCALE
+// ============================================================================
+
+$opacity-0: 0;
+$opacity-10: 0.1;
+$opacity-20: 0.2;
+$opacity-30: 0.3;
+$opacity-40: 0.4;
+$opacity-50: 0.5;
+$opacity-60: 0.6;
+$opacity-70: 0.7;
+$opacity-80: 0.8;
+$opacity-90: 0.9;
+$opacity-100: 1;
+
+// ============================================================================
+// CHART COLORS (ECharts Palette)
+// ============================================================================
+
+$chart-color-1: #3274d9;              // Blue
+$chart-color-2: #73bf69;              // Green
+$chart-color-3: #ff9830;              // Orange
+$chart-color-4: #f2495c;              // Red
+$chart-color-5: #9ac236;              // Light green
+$chart-color-6: #fac858;              // Yellow
+$chart-color-7: #ee6666;              // Light red
+$chart-color-8: #73c0de;              // Cyan
+
+$chart-colors: (
+  $chart-color-1,
+  $chart-color-2,
+  $chart-color-3,
+  $chart-color-4,
+  $chart-color-5,
+  $chart-color-6,
+  $chart-color-7,
+  $chart-color-8
+);
+
+// ============================================================================
+// SCROLLBAR STYLING
+// ============================================================================
+
+$scrollbar-width: 8px;
+$scrollbar-track-color: transparent;
+$scrollbar-thumb-color: #4a5260;
+$scrollbar-thumb-hover-color: #5a6270;
+
+// ============================================================================
+// FOCUS STATES
+// ============================================================================
+
+$focus-outline-width: 2px;
+$focus-outline-color: $color-primary;
+$focus-outline-offset: 2px;
+
+// ============================================================================
+// MEDIA QUERY MIXINS
+// ============================================================================
+
+@mixin media-sm {
+  @media (min-width: $breakpoint-sm) {
+    @content;
+  }
+}
+
+@mixin media-md {
+  @media (min-width: $breakpoint-md) {
+    @content;
+  }
+}
+
+@mixin media-lg {
+  @media (min-width: $breakpoint-lg) {
+    @content;
+  }
+}
+
+@mixin media-xl {
+  @media (min-width: $breakpoint-xl) {
+    @content;
+  }
+}
+
+@mixin media-2xl {
+  @media (min-width: $breakpoint-2xl) {
+    @content;
+  }
+}
+
+@mixin media-3xl {
+  @media (min-width: $breakpoint-3xl) {
+    @content;
+  }
+}
+
+// ============================================================================
+// UTILITY MIXINS
+// ============================================================================
+
+// Flexbox utilities
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+// Text utilities
+@mixin text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin text-clamp($lines: 2) {
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+// Transition utilities
+@mixin transition($properties: all, $duration: $transition-normal) {
+  transition: $properties $duration;
+}
+
+// Focus utilities
+@mixin focus-ring {
+  outline: $focus-outline-width solid $focus-outline-color;
+  outline-offset: $focus-outline-offset;
+}
+
+// Absolute positioning utilities
+@mixin absolute-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@mixin absolute-cover {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+// ============================================================================
+// EXPORT VARIABLES FOR CSS CUSTOM PROPERTIES
+// ============================================================================
+// These variables are used in theme files to generate CSS custom properties
+// that enable dynamic theming (dark/light mode switching)

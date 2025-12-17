@@ -1,0 +1,1998 @@
+I need to clarify something critical upfront: **This is NOT a research paper**. This is a **Chinese Product Requirements Document (PRD)** for building an observability monitoring platform frontend. There are no research algorithms or scientific methods - only software engineering specifications.
+
+However, I'll create a complete reproduction plan following your format, treating this as a technical implementation project.
+
+---
+
+# 🎯 COMPLETE REPRODUCTION PLAN
+## Observability Monitoring Platform - Frontend Demo System
+
+```yaml
+complete_reproduction_plan:
+  paper_info:
+    title: "可观测性监控平台 (Observability Monitoring Platform) - Product Requirements Document"
+    core_contribution: "Modern frontend demonstration system integrating metrics monitoring, distributed tracing, and log analysis for SRE and test engineers"
+    document_type: "Product Requirements Document (PRD) - NOT a research paper"
+    language: "Chinese"
+    pages: 6
+    implementation_type: "Full-stack frontend application with mock data"
+
+  # ============================================================================
+  # SECTION 1: FILE STRUCTURE (Priority-Ordered)
+  # ============================================================================
+
+  file_structure: |
+    observability-platform/
+    
+    # PRIORITY 1: Core Mock Data Generators (IMPLEMENT FIRST)
+    src/mock/generators/
+    ├── timeSeries.ts           # Time series data generator (sine wave + noise)
+    ├── traces.ts               # Distributed trace generator (recursive tree)
+    ├── logs.ts                 # Log generator (Poisson distribution)
+    └── utils.ts                # Helper functions (random, UUID, distributions)
+    
+    # PRIORITY 2: Type Definitions
+    src/types/
+    ├── metrics.ts              # MetricDataPoint, ServiceMetrics interfaces
+    ├── traces.ts               # Span, Trace, SpanLog interfaces
+    ├── logs.ts                 # LogEntry, LogLevel types
+    └── common.ts               # TimeRange, FilterState, Alert interfaces
+    
+    # PRIORITY 3: Core Composables
+    src/composables/
+    ├── useTimeRange.ts         # Global time range management
+    ├── useFilters.ts           # Multi-dimensional filtering logic
+    ├── useChartTheme.ts        # ECharts dark theme configuration
+    ├── useRealtime.ts          # Real-time auto-refresh logic
+    └── useLocalStorage.ts      # LocalStorage wrapper for persistence
+    
+    # PRIORITY 4: Chart Components (Critical for all visualizations)
+    src/components/Charts/
+    ├── BaseChart.vue           # ECharts wrapper with theme, resize, loading
+    ├── LineChart.vue           # Time series line charts
+    ├── BarChart.vue            # Bar charts for comparisons
+    ├── PieChart.vue            # Distribution pie charts
+    └── HeatmapChart.vue        # Heatmap visualizations
+    
+    # PRIORITY 5: Layout Components
+    src/components/Layout/
+    ├── AppLayout.vue           # Main application layout
+    ├── Sidebar.vue             # Navigation sidebar
+    ├── Header.vue              # Top header with time picker
+    └── ContentArea.vue         # Main content wrapper
+    
+    # PRIORITY 6: Feature-Specific Components
+    src/components/Tracing/
+    ├── TraceList.vue           # Trace list table
+    ├── TraceTopology.vue       # Service topology graph (AntV G6)
+    ├── FlameGraph.vue          # Flame graph visualization
+    ├── GanttChart.vue          # Gantt chart for span timeline
+    └── SpanDetails.vue         # Span detail panel
+    
+    src/components/Logs/
+    ├── LogViewer.vue           # Virtual scrolling log list
+    ├── LogEntry.vue            # Single log entry component
+    ├── LogSearch.vue           # Search with regex support
+    └── LogStats.vue            # Log statistics charts
+    
+    src/components/Filters/
+    ├── FilterPanel.vue         # Main filter panel
+    ├── ServiceFilter.vue       # Service selector
+    └── LevelFilter.vue         # Log level filter
+    
+    src/components/TimePicker/
+    ├── TimeRangePicker.vue     # Main time picker component
+    └── QuickRangeButtons.vue   # Quick time range buttons (5m, 1h, 24h, etc.)
+    
+    src/components/Common/
+    ├── LoadingSkeleton.vue     # Skeleton loading screens
+    ├── EmptyState.vue          # Empty state illustrations
+    ├── ErrorState.vue          # Error state displays
+    └── AlertBadge.vue          # Alert severity badges
+    
+    # PRIORITY 7: Views (Page Components)
+    src/views/Dashboard/
+    ├── index.vue               # Main dashboard view
+    ├── ServiceHealthCard.vue   # Service health status grid
+    ├── MetricsOverview.vue     # Key metrics cards
+    ├── AlertPanel.vue          # Active alerts panel
+    └── TrendCharts.vue         # Trend visualization charts
+    
+    src/views/Metrics/
+    ├── index.vue               # Metrics monitoring main view
+    ├── ServiceList.vue         # Service list with search
+    ├── ServiceDetail.vue       # Single service detail view
+    └── ComparisonView.vue      # Multi-service comparison
+    
+    src/views/Tracing/
+    ├── index.vue               # Trace list view
+    └── TraceDetail.vue         # Single trace detail with flame graph
+    
+    src/views/Logs/
+    └── index.vue               # Log analytics view
+    
+    src/views/Custom/
+    ├── index.vue               # Custom dashboard builder
+    ├── DashboardEditor.vue     # Drag-drop editor (vue-grid-layout)
+    └── WidgetConfig.vue        # Widget configuration panel
+    
+    # PRIORITY 8: State Management
+    src/stores/
+    ├── dashboard.ts            # Dashboard configuration state
+    ├── metrics.ts              # Metrics data state
+    ├── tracing.ts              # Tracing data state
+    ├── logs.ts                 # Logs data state
+    └── filters.ts              # Global filter state
+    
+    # PRIORITY 9: Mock Data Services
+    src/mock/
+    ├── data/
+    │   ├── services.ts         # Service definitions
+    │   └── templates.ts        # Log message templates
+    ├── metrics.ts              # Metrics mock API
+    ├── traces.ts               # Traces mock API
+    ├── logs.ts                 # Logs mock API
+    └── index.ts                # Unified mock API
+    
+    # PRIORITY 10: Supporting Files
+    src/router/
+    └── index.ts                # Vue Router configuration
+    
+    src/styles/
+    ├── variables.scss          # Dark theme color variables
+    ├── themes/
+    │   ├── dark.scss           # Dark theme styles
+    │   └── charts.scss         # Chart-specific styles
+    ├── mixins.scss             # SCSS mixins
+    └── global.scss             # Global styles
+    
+    src/utils/
+    ├── format.ts               # Data formatting utilities
+    ├── color.ts                # Color utilities
+    ├── time.ts                 # Time utilities
+    └── calculations.ts         # Metric calculations (percentiles, etc.)
+    
+    # Root Files
+    src/
+    ├── App.vue                 # Root component
+    └── main.ts                 # Application entry point
+    
+    # Configuration Files (IMPLEMENT LAST)
+    ├── vite.config.ts          # Vite configuration
+    ├── tsconfig.json           # TypeScript configuration
+    ├── .eslintrc.js            # ESLint configuration
+    ├── .prettierrc             # Prettier configuration
+    ├── package.json            # Dependencies and scripts
+    ├── README.md               # Documentation (IMPLEMENT LAST)
+    └── .gitignore              # Git ignore file
+    
+    # Total Files: ~75 files (focused on essential components)
+
+  # ============================================================================
+  # SECTION 2: IMPLEMENTATION COMPONENTS
+  # ============================================================================
+
+  implementation_components: |
+    
+    # ========================================================================
+    # COMPONENT GROUP 1: MOCK DATA GENERATION ALGORITHMS
+    # ========================================================================
+    
+    ## 1.1 TIME SERIES DATA GENERATOR
+    Location: src/mock/generators/timeSeries.ts
+    Purpose: Generate realistic monitoring metrics with cyclical patterns and noise
+    
+    Algorithm: Sine Wave + Random Noise
+    Formula: value(t) = baseline + amplitude·sin(2πft) + noise·rand(-1,1)
+    
+    Parameters:
+      - baseline: Base value (e.g., 45% for CPU)
+      - amplitude: Wave amplitude (e.g., 15% fluctuation)
+      - frequency: Controls wave period (0.001 for hourly cycles)
+      - noiseLevel: Random noise magnitude (0-1 scale)
+      - interval: Data point interval (60000ms = 1 minute)
+    
+    Implementation Steps:
+    1. Initialize time cursor at startTime
+    2. Loop while cursor <= endTime:
+       a. Calculate normalized time: t = (cursor - startTime) / frequency
+       b. Sine component: sineValue = amplitude * sin(2π * t)
+       c. Noise component: noise = (random() * 2 - 1) * noiseLevel * amplitude
+       d. Final value: baseline + sineValue + noise
+       e. Clamp to [0, infinity) for non-negative metrics
+       f. Add {timestamp: cursor, value} to array
+       g. Increment cursor by interval
+    3. Return data array
+    
+    Example Usage:
+      generateTimeSeries({
+        startTime: Date.now() - 24*3600*1000,
+        endTime: Date.now(),
+        interval: 60000,
+        baseValue: 45,
+        amplitude: 15,
+        frequency: 3600000,
+        noiseLevel: 0.3
+      })
+    
+    Special Cases:
+      - Error rate: baseline=0.02, amplitude=0.01 (low values)
+      - Response time: baseline=120ms, amplitude=30ms
+      - QPS: baseline=1000, amplitude=300
+      - Inject anomalies: 2% chance of spike (value * 1.5-3x)
+    
+    ---
+    
+    ## 1.2 DISTRIBUTED TRACE GENERATOR
+    Location: src/mock/generators/traces.ts
+    Purpose: Generate realistic microservice call chains with 3-10 depth
+    
+    Algorithm: Recursive Span Tree Generation
+    
+    Data Structure:
+      Trace = {
+        traceId: UUID,
+        spans: Span[],
+        startTime: microseconds,
+        duration: microseconds,
+        services: string[],
+        status: 'ok' | 'error'
+      }
+      
+      Span = {
+        spanId: UUID,
+        traceId: UUID,
+        parentSpanId: UUID | null,
+        serviceName: string,
+        operationName: string,
+        startTime: microseconds,
+        duration: microseconds,
+        tags: {http.method, http.status_code, error, ...},
+        logs: SpanLog[],
+        status: 'ok' | 'error'
+      }
+    
+    Implementation Steps:
+    1. Generate traceId (UUID v4)
+    2. Create root span:
+       - service: 'api-gateway'
+       - operation: 'HTTP GET /api/...'
+       - startTime: Date.now() * 1000 (microseconds)
+    3. Determine tree depth: random(3, 10)
+    4. Call generateSpanTree(rootSpan, depth-1, allSpans):
+       a. If depth == 0: return
+       b. childCount = random(1, 4)
+       c. For each child:
+          - Select random service from pool
+          - Generate spanId
+          - Calculate duration: exponential_random(λ=0.01) * 1000μs, max 500ms
+          - 5% probability: set status='error', increase duration 2-5x
+          - Create child span with parent relationship
+          - Recursively call for next depth level
+       d. Update parent duration to encompass all children
+    5. Calculate total trace duration
+    6. Return complete trace
+    
+    Service Pool:
+      - api-gateway, user-service, order-service, payment-service
+      - inventory-service, notification-service
+      - mysql-db, redis-cache, elasticsearch
+    
+    Duration Distribution:
+      - Most spans: 5-50ms (90%)
+      - Slow spans: 50-200ms (8%)
+      - Very slow: 200-500ms (2%)
+      - Use exponential distribution with λ=0.01
+    
+    Error Injection:
+      - 5% of spans have error=true
+      - Set tags.http.status_code = 500
+      - Add error message in logs
+      - Increase duration by 2-5x (simulating retries)
+    
+    ---
+    
+    ## 1.3 LOG GENERATOR
+    Location: src/mock/generators/logs.ts
+    Purpose: Generate realistic log stream with proper temporal and severity distribution
+    
+    Algorithm: Poisson Process + Weighted Level Distribution
+    
+    Log Levels Distribution:
+      - DEBUG: 30%
+      - INFO: 50%
+      - WARN: 15%
+      - ERROR: 4%
+      - FATAL: 1%
+    
+    Implementation Steps:
+    1. Divide time range into 1-minute buckets
+    2. For each bucket:
+       a. Calculate logs in this minute: Poisson(λ=averageLogsPerMinute)
+       b. For each log:
+          - Random timestamp within minute: bucket_start + random(0, 60000)
+          - Select service: random from service pool
+          - Determine level: weighted_random(level_distribution)
+          - Generate message from template based on level
+          - 60% chance: attach traceId if level >= WARN
+          - Add metadata: {hostname, pod, thread}
+          - If ERROR/FATAL: generate stack trace
+       c. Add to logs array
+    3. Sort logs by timestamp descending
+    4. Return logs array
+    
+    Message Templates:
+      DEBUG: "Processing request for user {userId}", "Cache hit for {key}"
+      INFO: "Request completed: {method} {path} - {status} - {duration}ms"
+      WARN: "High memory: {percent}%", "Slow query: {duration}ms"
+      ERROR: "Payment failed: {error}", "DB timeout: {duration}ms"
+      FATAL: "Service crash: {error}", "Out of memory"
+    
+    Structured Fields:
+      - timestamp (ISO8601)
+      - level (enum)
+      - service (string)
+      - message (string)
+      - traceId (optional, for correlation)
+      - spanId (optional)
+      - metadata: {hostname, pod, thread}
+      - stackTrace (for ERROR/FATAL)
+    
+    Correlation:
+      - 60% of WARN/ERROR/FATAL logs include traceId
+      - Links logs to traces for cross-module navigation
+    
+    ---
+    
+    ## 1.4 VIRTUAL SCROLLING OPTIMIZATION
+    Location: src/composables/useVirtualScroll.ts
+    Purpose: Render 10,000+ log entries smoothly at 60fps
+    
+    Algorithm: Viewport-Based Rendering with Buffer
+    
+    Concept:
+      - Only render items visible in viewport + buffer zone
+      - Dramatically reduce DOM nodes (99.6% reduction for 10k items)
+    
+    Implementation:
+    
+    State:
+      - scrollTop: current scroll position (px)
+      - itemHeight: height of each item (40px)
+      - containerHeight: viewport height (800px)
+      - bufferSize: items to render above/below (10 items)
+    
+    Calculation:
+      visibleStartIndex = floor(scrollTop / itemHeight)
+      visibleCount = ceil(containerHeight / itemHeight)
+      visibleEndIndex = visibleStartIndex + visibleCount
+      
+      renderStartIndex = max(0, visibleStartIndex - bufferSize)
+      renderEndIndex = min(totalItems, visibleEndIndex + bufferSize)
+      
+      offsetY = renderStartIndex * itemHeight
+      totalHeight = totalItems * itemHeight
+    
+    Rendering:
+    1. Create container with totalHeight
+    2. On scroll event (throttled to 16ms):
+       a. Update scrollTop
+       b. Calculate visible range
+       c. Slice items array [renderStartIndex...renderEndIndex]
+       d. Apply transform: translateY(offsetY) to position
+    3. Only render ~40 DOM nodes instead of 10,000
+    
+    Performance:
+      - Scenario: 10,000 logs, 40px height, 800px viewport
+      - Visible: 20 items (800/40)
+      - Rendered: 40 items (20 + 2*10 buffer)
+      - Saved: 9,960 DOM nodes (99.6% reduction)
+      - FPS: 60+ maintained
+    
+    Library: vue-virtual-scroller or custom implementation
+    
+    ---
+    
+    ## 1.5 PERCENTILE CALCULATOR
+    Location: src/utils/calculations.ts
+    Purpose: Calculate P50, P90, P95, P99 for response times
+    
+    Algorithm: Sorted Array Percentile
+    
+    Formula: P(n) = sorted_values[floor(n/100 * length)]
+    
+    Implementation:
+    1. Input: array of values, percentile (0.50, 0.90, 0.99)
+    2. Sort values ascending
+    3. Calculate index: floor(percentile * (length - 1))
+    4. For non-integer indices, use linear interpolation
+    5. Return value at index
+    
+    Example:
+      calculatePercentile([10, 20, 30, 40, 50, 60, 70, 80, 90, 100], 0.90)
+      -> sorted: [10, 20, ..., 100]
+      -> index: floor(0.90 * 9) = 8
+      -> return: 90
+    
+    Optimization:
+      - For large arrays (>1000), use approximate percentile
+      - Cache sorted array if calculating multiple percentiles
+    
+    ---
+    
+    ## 1.6 CHART DATA AGGREGATION
+    Location: src/utils/calculations.ts
+    Purpose: Reduce time series data points for performant rendering
+    
+    Algorithm: Bucket Aggregation (Simple) or LTTB (Advanced)
+    
+    Simple Bucket Aggregation:
+    1. If dataPoints.length <= targetCount (e.g., 1000): return as-is
+    2. bucketSize = ceil(dataPoints.length / targetCount)
+    3. For each bucket:
+       a. Get points in bucket: [startIdx...endIdx]
+       b. Aggregate: {
+            timestamp: first point timestamp,
+            value: average of bucket,
+            min: min of bucket,
+            max: max of bucket
+          }
+       c. Add to result
+    4. Return aggregated array
+    
+    LTTB (Largest-Triangle-Three-Buckets):
+      - Preserves visual characteristics better
+      - Reference: Sveinn Steinarsson, 2013
+      - Complexity: O(n)
+      - Use when visual accuracy is critical
+    
+    When to Apply:
+      - Apply when dataPoints > 1000
+      - Use worker thread to avoid blocking UI
+      - Cache results for same time range
+    
+    # ========================================================================
+    # COMPONENT GROUP 2: CORE UI COMPONENTS
+    # ========================================================================
+    
+    ## 2.1 BASE CHART COMPONENT
+    Location: src/components/Charts/BaseChart.vue
+    Purpose: Reusable ECharts wrapper with theme, responsiveness, loading
+    
+    Props:
+      - chartType: 'line' | 'bar' | 'pie' | 'heatmap'
+      - data: array | object (chart-specific data)
+      - title: string
+      - height: number (default: 300)
+      - thresholds: array (alert threshold lines)
+      - loading: boolean
+    
+    Features:
+    1. ECharts instance management
+       - Initialize on mount with dark theme
+       - Dispose on unmount
+       - Resize on container resize
+    
+    2. Dark theme configuration
+       - Background: transparent
+       - Grid lines: #23252b, dashed
+       - Text color: #d8d9da
+       - Axis color: #3274d9
+       - Tooltip: dark background with blue border
+    
+    3. Responsive behavior
+       - Use ResizeObserver
+       - Call chart.resize() on container size change
+    
+    4. Loading states
+       - Show skeleton loader when loading=true
+       - Smooth transition when data loads
+    
+    Implementation:
+      <template>
+        <div :style="{height: height + 'px'}">
+          <skeleton-loader v-if="loading" />
+          <div v-else ref="chartRef" class="chart-canvas"></div>
+        </div>
+      </template>
+      
+      <script setup>
+      import { ref, onMounted, onUnmounted, watch } from 'vue'
+      import * as echarts from 'echarts'
+      
+      const chartRef = ref(null)
+      const chartInstance = ref(null)
+      
+      onMounted(() => {
+        chartInstance.value = echarts.init(chartRef.value, 'dark')
+        updateChart()
+      })
+      
+      watch(() => props.data, updateChart)
+      
+      // Resize observer, cleanup, etc.
+      </script>
+    
+    ECharts Options Structure:
+      {
+        backgroundColor: 'transparent',
+        grid: {left: '3%', right: '4%', containLabel: true},
+        tooltip: {
+          trigger: 'axis',
+          backgroundColor: '#23252b',
+          borderColor: '#3274d9'
+        },
+        xAxis: {type: 'time', axisLabel: {color: '#9fa7b3'}},
+        yAxis: {
+          type: 'value',
+          splitLine: {lineStyle: {color: '#23252b', type: 'dashed'}}
+        },
+        series: [/* dynamic based on chartType */]
+      }
+    
+    ---
+    
+    ## 2.2 TIME RANGE PICKER
+    Location: src/components/TimePicker/TimeRangePicker.vue
+    Composable: src/composables/useTimeRange.ts
+    Purpose: Global time range selection affecting all modules
+    
+    Features:
+    1. Quick time ranges
+       - Buttons: 5m, 15m, 1h, 6h, 24h, 7d
+       - Click sets startTime and endTime
+    
+    2. Custom date-time picker
+       - Element Plus el-date-picker
+       - Type: datetimerange
+       - Emits change event
+    
+    3. Real-time mode
+       - Toggle switch
+       - Auto-refresh dropdown: 5s, 10s, 30s, 1min
+       - Use setInterval to refresh data
+    
+    4. Time comparison
+       - Checkbox to enable
+       - Shifts time range backward by same duration
+       - Overlay previous period data on charts
+    
+    State Management (Pinia):
+      state: {
+        startTime: Date,
+        endTime: Date,
+        quickRange: '24h' | '7d' | ...,
+        isRealtime: boolean,
+        refreshInterval: 10000,
+        comparisonEnabled: boolean
+      }
+      
+      actions: {
+        setQuickRange(range: string)
+        setCustomRange(start: Date, end: Date)
+        toggleRealtime()
+        setRefreshInterval(ms: number)
+      }
+    
+    Global Effect:
+      - All charts watch timeRangeStore
+      - When time changes, trigger data re-fetch
+      - Real-time mode calls refresh action periodically
+    
+    ---
+    
+    ## 2.3 FLAME GRAPH COMPONENT
+    Location: src/components/Tracing/FlameGraph.vue
+    Purpose: Visualize trace spans as hierarchical flame graph
+    
+    Input Data:
+      {
+        traceId: string,
+        spans: Span[] (with parentSpanId relationships)
+      }
+    
+    Algorithm:
+    1. Build span tree
+       - Find root span (parentSpanId = null)
+       - Recursively attach children to parents
+       - Create tree structure
+    
+    2. Calculate layout
+       For each span in tree (depth-first):
+         - depth = span's level (root = 0)
+         - xStart = (span.startTime - trace.startTime) / trace.totalDuration
+         - width = span.duration / trace.totalDuration
+         - yPosition = depth * rowHeight (e.g., 30px)
+         - Create rectangle: {x: xStart, y: yPosition, width, height}
+    
+    3. Render using Canvas or SVG
+       - Color by service name (consistent hashing)
+       - Label: show service + operation if width > threshold
+       - Tooltip on hover: full span details
+       - Click: expand/collapse children or show details
+    
+    4. Interactions
+       - Zoom: mouse wheel to zoom horizontally
+       - Pan: drag to pan
+       - Highlight: hover highlights span and its path to root
+    
+    Library Options:
+      - Custom Canvas rendering for performance
+      - D3.js for advanced interactions
+      - ECharts custom series (use bar chart with custom layout)
+    
+    Color Scheme:
+      - Hash service name to color index
+      - Use chart color palette: ['#3274d9', '#73bf69', '#ff9830', ...]
+      - Error spans: red (#f2495c)
+      - Slow spans (>200ms): orange (#ff9830)
+    
+    ---
+    
+    ## 2.4 LOG VIEWER COMPONENT
+    Location: src/components/Logs/LogViewer.vue
+    Purpose: Display 10k+ logs with virtual scrolling
+    
+    Features:
+    1. Virtual scrolling
+       - Use vue-virtual-scroller RecycleScroller
+       - itemSize: 40px per log
+       - buffer: 200px
+    
+    2. Log entry rendering
+       - Timestamp (formatted)
+       - Level badge (colored)
+       - Service name
+       - Message (highlighted if search match)
+       - Expandable for full details
+    
+    3. Search and filtering
+       - Text search with regex support
+       - Level multi-select filter
+       - Service dropdown filter
+       - TraceID exact match
+    
+    4. Syntax highlighting
+       - Level colors:
+         * DEBUG: gray (#6c6f77)
+         * INFO: blue (#3274d9)
+         * WARN: orange (#ff9830)
+         * ERROR: red (#f2495c)
+         * FATAL: dark red (#b91c1c)
+    
+    Implementation:
+      <RecycleScroller
+        :items="filteredLogs"
+        :item-size="40"
+        :buffer="200"
+        key-field="id"
+      >
+        <template #default="{ item }">
+          <LogEntry :log="item" @click="expandLog(item)" />
+        </template>
+      </RecycleScroller>
+    
+    Filtering Logic:
+      filteredLogs = computed(() => {
+        return logs.filter(log => {
+          // Level filter
+          if (!selectedLevels.includes(log.level)) return false
+          
+          // Service filter
+          if (selectedService && log.service !== selectedService) return false
+          
+          // Text search (regex)
+          if (searchTerm) {
+            const regex = new RegExp(searchTerm, 'i')
+            return regex.test(log.message)
+          }
+          
+          return true
+        })
+      })
+    
+    Performance:
+      - 10,000 logs: ~40 DOM nodes rendered
+      - Scroll FPS: 60+
+      - Search debounced to 300ms
+    
+    # ========================================================================
+    # COMPONENT GROUP 3: PAGE VIEWS
+    # ========================================================================
+    
+    ## 3.1 OVERVIEW DASHBOARD
+    Location: src/views/Dashboard/index.vue
+    Purpose: High-level system health overview
+    
+    Layout (4 sections):
+    
+    1. Service Health Grid (top)
+       - Display 3+ services with status
+       - Status: Healthy (green), Warning (orange), Fault (red)
+       - Click navigates to service detail
+    
+    2. Key Metrics Cards (middle-top)
+       - 4 cards: Error Rate, Avg Response Time, QPS, Resource Usage
+       - Each card: big number + sparkline
+       - Color coding based on thresholds
+    
+    3. Alert Panel (middle-bottom)
+       - List of active alerts
+       - Severity badges
+       - Click for alert details
+    
+    4. Trend Charts (bottom)
+       - 2-3 line charts showing key metrics over time
+       - Time range: follows global time picker
+       - Interactive tooltips
+    
+    Data Source:
+      - Mock metrics service
+      - Generate time series for error rate, QPS, response time, CPU, memory
+      - Refresh on time range change or real-time mode
+    
+    ---
+    
+    ## 3.2 METRICS MONITORING VIEW
+    Location: src/views/Metrics/index.vue
+    Purpose: Detailed metrics analysis for all services
+    
+    Layout:
+    
+    1. Service List (left sidebar or top)
+       - All monitored services
+       - Search box
+       - Click to view details
+    
+    2. Service Detail View (main area)
+       - Service name header
+       - Multi-metric charts:
+         * Error rate (line chart)
+         * Response time percentiles (multi-line: P50, P90, P99)
+         * QPS (line chart)
+         * CPU/Memory (dual-axis line chart)
+       - Chart type switcher (line/bar/pie)
+    
+    3. Comparison View (optional toggle)
+       - Select 2+ services
+       - Side-by-side or overlay charts
+       - Compare same metric across services
+    
+    Data Source:
+      - generateTimeSeries() for each metric
+      - Different baselines and amplitudes per service
+      - Time range: global
+    
+    ---
+    
+    ## 3.3 DISTRIBUTED TRACING VIEW
+    Location: src/views/Tracing/index.vue
+    Location: src/views/Tracing/TraceDetail.vue
+    Purpose: Analyze request flows through microservices
+    
+    Trace List View:
+    
+    1. Table columns
+       - TraceID (clickable)
+       - Services (tags)
+       - Duration (ms)
+       - Status (ok/error badge)
+       - Timestamp
+    
+    2. Filters
+       - Service filter
+       - Status filter (ok/error)
+       - Duration range slider
+    
+    3. Click trace -> navigate to detail
+    
+    Trace Detail View:
+    
+    1. Trace Header
+       - TraceID
+       - Total duration
+       - Service count
+       - Status
+    
+    2. Visualization Tabs
+       - Tab 1: Flame Graph (FlameGraph.vue)
+       - Tab 2: Gantt Chart (timeline view)
+       - Tab 3: Service Topology (AntV G6 graph)
+    
+    3. Span List Table
+       - All spans in trace
+       - Columns: Service, Operation, Duration, Status
+       - Click span -> show details in right panel
+    
+    4. Span Details Panel (right)
+       - Service, operation, duration
+       - Tags (key-value pairs)
+       - Logs (timestamped events)
+       - Link to logs (via traceId)
+    
+    Data Source:
+      - generateTrace() for each trace
+      - 100+ traces in list
+      - Detail view parses span tree
+    
+    ---
+    
+    ## 3.4 LOG ANALYTICS VIEW
+    Location: src/views/Logs/index.vue
+    Purpose: Search, filter, and analyze logs
+    
+    Layout:
+    
+    1. Search Bar (top)
+       - Text input with regex toggle
+       - Quick filters: level, service, time
+       - Search button
+    
+    2. Log Stream (main area)
+       - LogViewer component (virtual scroll)
+       - 10,000+ logs rendered smoothly
+       - Color-coded by level
+    
+    3. Log Details Modal (on click)
+       - Full log content
+       - Structured fields
+       - Stack trace (if error)
+       - Context logs (before/after)
+       - Link to trace (if traceId exists)
+    
+    4. Statistics Panel (right sidebar)
+       - Log count trend (line chart)
+       - Level distribution (pie chart)
+       - Top services (bar chart)
+    
+    Data Source:
+      - generateLogs(10000, ...) for initial load
+      - Filter in-memory for instant response
+      - Real-time mode: append new logs every interval
+    
+    ---
+    
+    ## 3.5 CUSTOM DASHBOARD VIEW
+    Location: src/views/Custom/index.vue
+    Purpose: User-created dashboards with drag-drop widgets
+    
+    Features:
+    
+    1. Dashboard Grid (vue-grid-layout)
+       - Drag widgets to reposition
+       - Resize widgets
+       - Grid: 12 columns
+    
+    2. Widget Library (left panel)
+       - Available widgets:
+         * Line chart
+         * Bar chart
+         * Pie chart
+         * Metric card
+         * Alert panel
+       - Drag to grid to add
+    
+    3. Widget Configuration
+       - Click widget settings icon
+       - Select data source (service, metric)
+       - Choose chart type
+       - Set thresholds
+       - Apply
+    
+    4. Dashboard Templates
+       - Preset templates:
+         * Application Monitoring
+         * Infrastructure Monitoring
+         * Business Monitoring
+       - Click to load template
+    
+    5. Save/Load
+       - Save to LocalStorage
+       - Load on page load
+       - Export/import JSON
+    
+    Data Structure:
+      {
+        dashboardId: string,
+        name: string,
+        layout: GridLayout[],
+        widgets: [{
+          id: string,
+          type: 'chart' | 'metric' | 'alert',
+          config: {
+            service: string,
+            metric: string,
+            chartType: string,
+            thresholds: number[]
+          }
+        }]
+      }
+    
+    Persistence:
+      - localStorage.setItem('dashboards', JSON.stringify(dashboards))
+      - Load on mount
+    
+    # ========================================================================
+    # COMPONENT GROUP 4: STATE MANAGEMENT & ROUTING
+    # ========================================================================
+    
+    ## 4.1 PINIA STORES
+    
+    ### timeRangeStore (stores/timeRange.ts)
+    state: {
+      startTime: Date,
+      endTime: Date,
+      quickRange: '24h',
+      isRealtime: false,
+      refreshInterval: 10000
+    }
+    actions: {
+      setQuickRange, setCustomRange, toggleRealtime, setRefreshInterval
+    }
+    
+    ### filtersStore (stores/filters.ts)
+    state: {
+      selectedServices: string[],
+      selectedEnvironment: 'production' | null,
+      selectedRegion: string | null,
+      selectedTags: string[]
+    }
+    actions: {
+      setServiceFilter, clearFilters, saveFilterPreset, loadFilterPreset
+    }
+    
+    ### dashboardStore (stores/dashboard.ts)
+    state: {
+      dashboards: Dashboard[],
+      activeDashboardId: string | null
+    }
+    actions: {
+      saveDashboard, loadDashboard, deleteDashboard, setActive
+    }
+    
+    ---
+    
+    ## 4.2 ROUTING CONFIGURATION
+    Location: src/router/index.ts
+    
+    Routes:
+      / -> redirect to /dashboard
+      /dashboard -> Dashboard view
+      /metrics -> Metrics list view
+      /metrics/:service -> Service detail view
+      /tracing -> Trace list view
+      /tracing/:traceId -> Trace detail view
+      /logs -> Log analytics view
+      /custom -> Custom dashboard builder
+    
+    Navigation:
+      - Sidebar links
+      - Breadcrumbs in header
+      - Lazy-loaded route components
+    
+    # ========================================================================
+    # COMPONENT GROUP 5: STYLING & THEME
+    # ========================================================================
+    
+    ## 5.1 DARK THEME COLOR PALETTE
+    Location: src/styles/variables.scss
+    
+    Colors (Grafana-inspired):
+      $bg-primary: #0b0c0e
+      $bg-secondary: #181b1f
+      $bg-card: #1f1f24
+      $bg-card-hover: #23252b
+      
+      $primary: #3274d9 (blue)
+      $success: #73bf69 (green)
+      $warning: #ff9830 (orange)
+      $danger: #f2495c (red)
+      
+      $text-primary: #d8d9da
+      $text-secondary: #9fa7b3
+      $text-disabled: #6c6f77
+      
+      $chart-colors: #3274d9, #73bf69, #ff9830, #f2495c, #b877d9, #58a6ff, #ffc107, #00d4aa
+    
+    Usage:
+      - Apply to body background, card backgrounds
+      - Use in ECharts theme configuration
+      - Apply to Element Plus component overrides
+    
+    ---
+    
+    ## 5.2 CHART THEME CONFIGURATION
+    Location: src/composables/useChartTheme.ts
+    
+    ECharts Dark Theme:
+      {
+        color: chartColors,
+        backgroundColor: 'transparent',
+        textStyle: {color: '#d8d9da'},
+        grid: {borderWidth: 0},
+        categoryAxis: {
+          axisLine: {lineStyle: {color: 'rgba(255,255,255,0.2)'}},
+          splitLine: {lineStyle: {color: 'rgba(255,255,255,0.1)', type: 'dashed'}}
+        },
+        valueAxis: {
+          axisLine: {show: false},
+          splitLine: {lineStyle: {color: 'rgba(255,255,255,0.1)', type: 'dashed'}}
+        },
+        tooltip: {
+          backgroundColor: '#23252b',
+          borderColor: '#3274d9'
+        }
+      }
+    
+    Export as composable for reuse across all charts
+
+  # ============================================================================
+  # SECTION 3: VALIDATION APPROACH
+  # ============================================================================
+
+  validation_approach: |
+    
+    ## VALIDATION STRATEGY: Feature Completeness + Performance + Visual Quality
+    
+    ### 3.1 FUNCTIONAL VALIDATION
+    
+    #### Module 1: Overview Dashboard
+    Test Cases:
+    1. Load dashboard -> Verify all 4 sections render
+    2. Check service health cards display 3+ services with status
+    3. Verify key metrics cards show: error rate, avg response time, QPS, resource usage
+    4. Alert panel displays alerts with severity badges
+    5. Trend charts render with time series data
+    6. Change time range -> All charts update
+    7. Real-time mode -> Charts auto-refresh every interval
+    
+    Expected Results:
+    - All sections visible within 2s
+    - Charts render within 500ms each
+    - No console errors
+    
+    #### Module 2: Metrics Monitoring
+    Test Cases:
+    1. Service list displays all mock services
+    2. Search service -> List filters correctly
+    3. Click service -> Navigate to detail view
+    4. Detail view shows multiple metric charts
+    5. Switch chart type (line/bar) -> Chart updates
+    6. Comparison view shows 2+ services side-by-side
+    7. Percentiles (P50, P90, P99) calculated correctly
+    
+    Expected Results:
+    - Service list renders < 300ms
+    - Chart switching instant
+    - Percentile values within expected range (verify with known data)
+    
+    #### Module 3: Distributed Tracing
+    Test Cases:
+    1. Trace list displays 100+ traces
+    2. Filter by service/status -> List updates
+    3. Click trace -> Navigate to detail view
+    4. Flame graph renders call hierarchy
+    5. Gantt chart shows timeline
+    6. Service topology graph displays relationships
+    7. Click span -> Details panel shows tags/logs
+    8. Slow spans highlighted in orange/red
+    9. Click "View Logs" -> Navigates to logs filtered by traceId
+    
+    Expected Results:
+    - Flame graph renders < 500ms
+    - Topology graph interactive (zoom, pan)
+    - Span hierarchy correct (parent-child relationships)
+    
+    #### Module 4: Log Analytics
+    Test Cases:
+    1. Log stream displays 10,000 logs
+    2. Virtual scrolling maintains 50+ FPS during scroll
+    3. Search logs by keyword -> Results filter correctly
+    4. Regex search works (e.g., "error.*timeout")
+    5. Level filter (ERROR only) -> Shows only ERROR logs
+    6. Service filter -> Filters by service
+    7. TraceID search -> Finds correlated logs
+    8. Click log -> Detail modal shows full content
+    9. Stack trace visible for ERROR/FATAL logs
+    10. Log statistics charts update based on filters
+    
+    Expected Results:
+    - Initial render: < 1s for 10k logs
+    - Scroll FPS: 60+ (measure with Chrome DevTools)
+    - Search response: < 200ms
+    - Filtering instant
+    
+    #### Module 5: Custom Dashboard
+    Test Cases:
+    1. Drag widget from library -> Adds to grid
+    2. Drag widget in grid -> Repositions
+    3. Resize widget -> Size changes
+    4. Configure widget -> Opens config panel
+    5. Select metric -> Widget displays data
+    6. Save dashboard -> Persists to LocalStorage
+    7. Reload page -> Dashboard loads from LocalStorage
+    8. Load template -> Pre-configured dashboard appears
+    9. Create multiple dashboards -> Switch between them
+    
+    Expected Results:
+    - Drag-drop smooth (60fps)
+    - LocalStorage saves correctly (verify in DevTools)
+    - Templates load within 1s
+    
+    ### 3.2 CROSS-MODULE VALIDATION
+    
+    Test Cases:
+    1. Dashboard: Click metric anomaly -> Navigates to Tracing with service filter
+    2. Tracing: Click span with traceId -> Navigates to Logs with traceId filter
+    3. Logs: Click traceId link -> Navigates to Trace detail
+    4. Time range change -> All open modules refresh data
+    5. Filter change -> All modules respect filters
+    
+    Expected Results:
+    - Navigation preserves context (filters, time range)
+    - TraceID correlation works bidirectionally
+    
+    ### 3.3 PERFORMANCE VALIDATION
+    
+    Metrics to Measure:
+    
+    1. First Contentful Paint (FCP)
+       - Target: < 1.5s
+       - Tool: Chrome DevTools Lighthouse
+       - Test: Load dashboard on fresh page load
+    
+    2. Time to Interactive (TTI)
+       - Target: < 2s
+       - Tool: Chrome DevTools Lighthouse
+    
+    3. Chart Render Time
+       - Target: < 500ms per chart
+       - Measure: performance.now() before/after render
+       - Test: Load dashboard with 6 charts
+    
+    4. Virtual Scroll FPS
+       - Target: > 50 FPS
+       - Tool: Chrome DevTools Performance monitor
+       - Test: Scroll through 10k logs rapidly
+    
+    5. Memory Usage
+       - Target: < 200MB for typical session
+       - Tool: Chrome DevTools Memory profiler
+       - Test: 30 minutes of usage across all modules
+    
+    6. Data Processing Speed
+       - Time series aggregation: < 100ms for 10k points
+       - Log filtering: < 200ms for 10k logs
+       - Percentile calculation: < 50ms for 1k values
+    
+    Validation Script:
+      // performance-test.js
+      const metrics = {
+        chartRenderTimes: [],
+        scrollFPS: [],
+        dataProcessingTimes: []
+      }
+      
+      // Measure chart render
+      const start = performance.now()
+      await renderChart(data)
+      const end = performance.now()
+      metrics.chartRenderTimes.push(end - start)
+      
+      // Validate
+      const avgChartRender = average(metrics.chartRenderTimes)
+      console.assert(avgChartRender < 500, `Chart render too slow: ${avgChartRender}ms`)
+    
+    ### 3.4 VISUAL QUALITY VALIDATION
+    
+    Criteria:
+    
+    1. Dark Theme Consistency
+       - All pages use same color palette
+       - No white/light flashes
+       - Text readable (contrast ratio > 4.5:1)
+    
+    2. Chart Aesthetics
+       - Colors match Grafana style (blue, green, orange, red)
+       - Grid lines subtle, not distracting
+       - Tooltips dark themed
+       - Animations smooth (300-500ms)
+    
+    3. Layout Quality
+       - Proper spacing (use 8px grid system)
+       - Responsive (test at 1920x1080, 2560x1440)
+       - No overflow/scrollbars where not intended
+    
+    4. Interaction Feedback
+       - Hover states on interactive elements
+       - Loading skeletons during data fetch
+       - Empty states with helpful messages
+       - Error states clear and actionable
+    
+    Visual Regression Testing (Optional):
+      - Take screenshots of each view
+      - Compare against reference images
+      - Flag pixel differences > threshold
+    
+    ### 3.5 CODE QUALITY VALIDATION
+    
+    Checks:
+    
+    1. TypeScript
+       - No type errors: `tsc --noEmit`
+       - Strict mode enabled in tsconfig.json
+    
+    2. Linting
+       - No ESLint errors: `npm run lint`
+       - No warnings (or < 5 acceptable)
+    
+    3. Formatting
+       - All files Prettier formatted: `npm run format`
+    
+    4. Build
+       - Production build succeeds: `npm run build`
+       - Bundle size < 3MB (check dist/)
+       - No build warnings
+    
+    5. Dependencies
+       - No security vulnerabilities: `npm audit`
+       - All dependencies up-to-date
+    
+    ### 3.6 ACCEPTANCE TEST PLAN
+    
+    Final Checklist (All must pass):
+    
+    Functionality:
+    - [ ] All 5 modules accessible via navigation
+    - [ ] Mock data generation works (metrics, traces, logs)
+    - [ ] Time range picker affects all modules
+    - [ ] Filters work (service, level, status)
+    - [ ] Real-time mode auto-refreshes
+    - [ ] Cross-module navigation (metric→trace→log)
+    
+    Performance:
+    - [ ] FCP < 2s
+    - [ ] Chart render < 500ms
+    - [ ] Virtual scroll FPS > 50
+    - [ ] 10k logs load smoothly
+    
+    Visual:
+    - [ ] Dark theme consistent across all pages
+    - [ ] Charts professional (Grafana-like)
+    - [ ] No visual glitches or flashes
+    - [ ] Loading/empty/error states present
+    
+    Code:
+    - [ ] No TypeScript errors
+    - [ ] No ESLint errors
+    - [ ] Build succeeds
+    - [ ] No console errors in browser
+    
+    Documentation:
+    - [ ] README.md includes setup instructions
+    - [ ] Mock data explained
+    - [ ] Technology stack documented
+
+  # ============================================================================
+  # SECTION 4: ENVIRONMENT SETUP
+  # ============================================================================
+
+  environment_setup: |
+    
+    ## 4.1 DEVELOPMENT ENVIRONMENT
+    
+    ### Required Software
+    
+    1. Node.js
+       - Version: 18.x or 20.x (LTS)
+       - Download: https://nodejs.org/
+       - Verify: `node --version`
+    
+    2. Package Manager
+       - npm (comes with Node.js) or
+       - pnpm (recommended for faster installs)
+       - Install pnpm: `npm install -g pnpm`
+    
+    3. Code Editor
+       - VS Code (recommended)
+       - Extensions:
+         * Volar (Vue 3 support)
+         * ESLint
+         * Prettier
+         * TypeScript Vue Plugin
+    
+    4. Browser
+       - Chrome or Firefox (latest)
+       - Vue DevTools extension installed
+    
+    ### Project Initialization
+    
+    ```bash
+    # Create Vite project
+    npm create vite@latest observability-platform -- --template vue-ts
+    cd observability-platform
+    npm install
+    ```
+    
+    ### Dependencies (package.json)
+    
+    ```json
+    {
+      "dependencies": {
+        "vue": "^3.3.4",
+        "vue-router": "^4.2.4",
+        "pinia": "^2.1.6",
+        "element-plus": "^2.3.14",
+        "@element-plus/icons-vue": "^2.1.0",
+        "echarts": "^5.4.3",
+        "vue-echarts": "^6.6.1",
+        "@antv/g6": "^4.8.16",
+        "vue-virtual-scroller": "^2.0.0-beta.8",
+        "vue-grid-layout": "^3.0.0",
+        "dayjs": "^1.11.9",
+        "lodash-es": "^4.17.21",
+        "@iconify/vue": "^4.1.1"
+      },
+      "devDependencies": {
+        "@vitejs/plugin-vue": "^4.3.4",
+        "vite": "^4.4.9",
+        "typescript": "^5.2.2",
+        "@types/node": "^20.6.0",
+        "@types/lodash-es": "^4.17.9",
+        "sass": "^1.66.1",
+        "eslint": "^8.49.0",
+        "eslint-plugin-vue": "^9.17.0",
+        "@typescript-eslint/eslint-plugin": "^6.7.0",
+        "@typescript-eslint/parser": "^6.7.0",
+        "prettier": "^3.0.3",
+        "vite-plugin-compression": "^0.5.1"
+      }
+    }
+    ```
+    
+    Install all:
+    ```bash
+    npm install
+    # or
+    pnpm install
+    ```
+    
+    ### Configuration Files
+    
+    #### vite.config.ts
+    ```typescript
+    import { defineConfig } from 'vite'
+    import vue from '@vitejs/plugin-vue'
+    import { resolve } from 'path'
+    
+    export default defineConfig({
+      plugins: [vue()],
+      resolve: {
+        alias: {
+          '@': resolve(__dirname, 'src')
+        }
+      },
+      css: {
+        preprocessorOptions: {
+          scss: {
+            additionalData: `@import "@/styles/variables.scss";`
+          }
+        }
+      },
+      server: {
+        port: 3000,
+        open: true
+      },
+      build: {
+        target: 'es2015',
+        rollupOptions: {
+          output: {
+            manualChunks: {
+              'echarts': ['echarts', 'vue-echarts'],
+              'element-plus': ['element-plus'],
+              'vendor': ['vue', 'vue-router', 'pinia']
+            }
+          }
+        }
+      }
+    })
+    ```
+    
+    #### tsconfig.json
+    ```json
+    {
+      "compilerOptions": {
+        "target": "ES2020",
+        "useDefineForClassFields": true,
+        "module": "ESNext",
+        "lib": ["ES2020", "DOM", "DOM.Iterable"],
+        "skipLibCheck": true,
+        "moduleResolution": "bundler",
+        "allowImportingTsExtensions": true,
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "noEmit": true,
+        "jsx": "preserve",
+        "strict": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noFallthroughCasesInSwitch": true,
+        "baseUrl": ".",
+        "paths": {
+          "@/*": ["src/*"]
+        }
+      },
+      "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
+      "references": [{ "path": "./tsconfig.node.json" }]
+    }
+    ```
+    
+    #### .eslintrc.js
+    ```javascript
+    module.exports = {
+      extends: [
+        'eslint:recommended',
+        'plugin:vue/vue3-recommended',
+        '@vue/typescript/recommended'
+      ],
+      rules: {
+        'vue/multi-word-component-names': 'off'
+      }
+    }
+    ```
+    
+    ### Hardware Requirements
+    
+    - CPU: Modern multi-core (4+ cores recommended)
+    - RAM: 8GB minimum, 16GB recommended
+    - Disk: 2GB free space for dependencies
+    - Display: 1920x1080 or higher
+    
+    ### Browser Requirements
+    
+    - Chrome 90+
+    - Firefox 88+
+    - Edge 90+
+    - Safari 14+ (limited support)
+    
+    ### No Backend Required
+    
+    - This is a pure frontend demo
+    - All data generated client-side with mock functions
+    - No API server, database, or authentication needed
+    
+    ## 4.2 DEVELOPMENT COMMANDS
+    
+    ```bash
+    # Install dependencies
+    npm install
+    
+    # Run dev server (hot reload)
+    npm run dev
+    # -> Opens http://localhost:3000
+    
+    # Type check
+    npm run type-check
+    # -> Runs tsc --noEmit
+    
+    # Lint
+    npm run lint
+    # -> Runs ESLint
+    
+    # Format code
+    npm run format
+    # -> Runs Prettier
+    
+    # Build for production
+    npm run build
+    # -> Creates dist/ folder
+    
+    # Preview production build
+    npm run preview
+    # -> Serves dist/ folder
+    ```
+    
+    ## 4.3 DEPLOYMENT
+    
+    Build Output:
+    - Static files in `dist/` folder
+    - No server-side rendering
+    - Can be hosted on any static file server
+    
+    Hosting Options:
+    
+    1. Vercel (Recommended)
+       ```bash
+       npm install -g vercel
+       vercel deploy
+       ```
+    
+    2. Netlify
+       - Connect GitHub repo
+       - Build command: `npm run build`
+       - Publish directory: `dist`
+    
+    3. GitHub Pages
+       ```bash
+       npm run build
+       cd dist
+       git init
+       git add -A
+       git commit -m 'deploy'
+       git push -f git@github.com:username/repo.git main:gh-pages
+       ```
+    
+    4. Any Static Server
+       - Nginx, Apache, or Node.js serve
+       - Point to `dist/` folder
+
+  # ============================================================================
+  # SECTION 5: IMPLEMENTATION STRATEGY
+  # ============================================================================
+
+  implementation_strategy: |
+    
+    ## 5.1 IMPLEMENTATION PHASES (20-Day Plan)
+    
+    ### PHASE 1: Foundation (Days 1-3)
+    
+    Day 1: Project Setup
+    - Initialize Vite + Vue 3 + TypeScript project
+    - Install all dependencies from package.json
+    - Configure vite.config.ts, tsconfig.json, ESLint, Prettier
+    - Create complete directory structure (see file_structure)
+    - Setup Git repository
+    - Create dark theme SCSS variables
+    - Verify: `npm run dev` works, dark background visible
+    
+    Day 2: Type Definitions & Core Composables
+    - Implement all TypeScript interfaces in src/types/
+      * metrics.ts: MetricDataPoint, ServiceMetrics
+      * traces.ts: Span, Trace, SpanLog
+      * logs.ts: LogEntry, LogLevel
+      * common.ts: TimeRange, FilterState, Alert
+    - Implement useTimeRange.ts composable (Pinia store)
+    - Implement useFilters.ts composable
+    - Implement useChartTheme.ts (ECharts dark theme config)
+    - Verify: TypeScript compiles without errors
+    
+    Day 3: Mock Data Generators
+    - Implement src/mock/generators/timeSeries.ts
+      * generateTimeSeries() function (sine wave + noise)
+      * Test: Generate CPU metrics, verify realistic fluctuations
+    - Implement src/mock/generators/traces.ts
+      * generateTrace() function (recursive span tree)
+      * Test: Generate trace, verify span hierarchy
+    - Implement src/mock/generators/logs.ts
+      * generateLogs() function (Poisson distribution)
+      * Test: Generate 10k logs, verify level distribution
+    - Implement src/mock/generators/utils.ts (helper functions)
+    - Create mock services: src/mock/metrics.ts, traces.ts, logs.ts
+    - Verify: Can generate and log mock data to console
+    
+    ### PHASE 2: Core Components (Days 4-7)
+    
+    Day 4: Layout & Navigation
+    - Implement src/components/Layout/AppLayout.vue
+      * Sidebar with navigation links
+      * Header with time picker placeholder
+      * Content area
+    - Implement Sidebar.vue, Header.vue, ContentArea.vue
+    - Setup Vue Router in src/router/index.ts
+      * All routes defined (dashboard, metrics, tracing, logs, custom)
+      * Lazy loading for route components
+    - Verify: Navigation between routes works, layout renders
+    
+    Day 5: Chart Components
+    - Implement src/components/Charts/BaseChart.vue
+      * ECharts initialization with dark theme
+      * Resize observer for responsiveness
+      * Loading state with skeleton
+      * Props: chartType, data, title, height, thresholds
+    - Implement LineChart.vue, BarChart.vue, PieChart.vue
+      * Wrap BaseChart with specific configurations
+    - Test: Render line chart with mock time series data
+    - Verify: Chart displays, tooltips work, resize works
+    
+    Day 6: Time Picker & Filters
+    - Implement src/components/TimePicker/TimeRangePicker.vue
+      * Quick range buttons (5m, 1h, 24h, 7d)
+      * Custom date-time picker (Element Plus)
+      * Real-time mode toggle
+      * Refresh interval dropdown
+    - Implement QuickRangeButtons.vue
+    - Implement src/components/Filters/FilterPanel.vue
+      * Service multi-select
+      * Environment dropdown
+      * Tag input
+    - Connect to Pinia stores (timeRangeStore, filtersStore)
+    - Verify: Time range changes update store, filters apply
+    
+    Day 7: Common Components
+    - Implement src/components/Common/LoadingSkeleton.vue
+    - Implement EmptyState.vue (with friendly illustration/message)
+    - Implement ErrorState.vue (with retry button)
+    - Implement AlertBadge.vue (colored severity badges)
+    - Create reusable styles for these components
+    - Verify: Can render loading, empty, error states
+    
+    ### PHASE 3: Dashboard & Metrics Views (Days 8-11)
+    
+    Day 8: Overview Dashboard
+    - Implement src/views/Dashboard/index.vue
+      * Layout: 4 sections (health, metrics cards, alerts, trends)
+    - Implement ServiceHealthCard.vue
+      * Display 3 services with status (healthy/warning/fault)
+      * Click navigates to service detail
+    - Implement MetricsOverview.vue
+      * 4 cards: Error rate, Avg response time, QPS, Resource usage
+      * Big number + sparkline
+    - Fetch mock data on mount and time range change
+    - Verify: Dashboard displays all sections with data
+    
+    Day 9: Alert Panel & Trend Charts
+    - Implement AlertPanel.vue
+      * List of active alerts (mock data)
+      * Severity badges
+      * Click for details modal
+    - Implement TrendCharts.vue
+      * 2-3 line charts for key metrics
+      * Time range from global store
+    - Connect real-time mode: auto-refresh on interval
+    - Verify: Dashboard complete, responsive, updates on time change
+    
+    Day 10: Metrics Monitoring View
+    - Implement src/views/Metrics/index.vue
+      * Service list (left or top)
+      * Service detail area (main)
+    - Implement ServiceList.vue
+      * Display all mock services
+      * Search box
+      * Click to view details
+    - Implement ServiceDetail.vue
+      * Service name header
+      * Multi-metric charts (error rate, response time, QPS, CPU/memory)
+      * Use LineChart components
+    - Fetch mock metrics data per service
+    - Verify: Service list renders, detail view shows charts
+    
+    Day 11: Comparison View
+    - Implement ComparisonView.vue
+      * Select 2+ services (checkboxes)
+      * Side-by-side or overlay charts
+      * Compare same metric across services
+    - Implement percentile calculations in utils/calculations.ts
+      * calculatePercentile() function
+      * Test with sample data
+    - Display P50, P90, P99 in charts
+    - Verify: Comparison shows multiple services, percentiles correct
+    
+    ### PHASE 4: Tracing & Logs Views (Days 12-16)
+    
+    Day 12: Trace List View
+    - Implement src/views/Tracing/index.vue
+      * Table with columns: TraceID, Services, Duration, Status, Timestamp
+      * Click navigates to detail
+    - Implement TraceList.vue component
+    - Generate 100+ mock traces with generateTrace()
+    - Implement filters (service, status, duration range)
+    - Verify: Trace list displays, filters work, navigation works
+    
+    Day 13: Flame Graph Component
+    - Implement src/components/Tracing/FlameGraph.vue
+      * Build span tree from flat span list
+      * Calculate layout (x, y, width, height per span)
+      * Render using Canvas or ECharts custom series
+      * Color by service, highlight errors
+      * Tooltip on hover, click for details
+    - Test with sample trace (3-8 depth)
+    - Verify: Flame graph renders, hierarchy correct, interactive
+    
+    Day 14: Trace Detail View
+    - Implement src/views/Tracing/TraceDetail.vue
+      * Trace header (ID, duration, services, status)
+      * Tabs: Flame Graph, Gantt Chart, Topology
+    - Implement GanttChart.vue (timeline view of spans)
+    - Implement TraceTopology.vue (AntV G6 graph)
+      * Nodes: services
+      * Edges: span relationships
+      * Interactive (zoom, pan)
+    - Implement SpanDetails.vue (right panel)
+      * Span info, tags, logs
+      * Link to logs button (navigate with traceId)
+    - Verify: All tabs render, span details show, link to logs works
+    
+    Day 15: Log Analytics View
+    - Implement src/views/Logs/index.vue
+      * Search bar (text input + regex toggle)
+      * Log stream (main area)
+      * Statistics panel (right sidebar)
+    - Implement src/components/Logs/LogViewer.vue
+      * Use vue-virtual-scroller RecycleScroller
+      * itemSize: 40px, buffer: 200px
+      * Render 10,000 logs
+    - Implement LogEntry.vue
+      * Timestamp, level badge, service, message
+      * Click expands details
+    - Generate 10k logs with generateLogs()
+    - Verify: Logs render smoothly, scroll FPS > 50
+    
+    Day 16: Log Search & Statistics
+    - Implement LogSearch.vue
+      * Text search with debounce (300ms)
+      * Regex support (try-catch for invalid regex)
+      * Level filter (multi-select)
+      * Service filter (dropdown)
+      * TraceID exact match
+    - Implement filtering logic in computed property
+    - Implement LogStats.vue
+      * Log count trend (line chart)
+      * Level distribution (pie chart)
+      * Top services (bar chart)
+    - Implement log detail modal (expand on click)
+      * Full content, stack trace, context logs
+      * Link to trace (if traceId)
+    - Verify: Search works, filters apply instantly, stats update
+    
+    ### PHASE 5: Custom Dashboard & Advanced Features (Days 17-19)
+    
+    Day 17: Custom Dashboard Builder
+    - Implement src/views/Custom/index.vue
+      * Dashboard grid (vue-grid-layout)
+      * Widget library panel (left)
+      * Dashboard name input
+      * Save/load buttons
+    - Implement DashboardEditor.vue
+      * Grid with drag-drop
+      * 12 columns, rowHeight: 50px
+      * Draggable, resizable widgets
+    - Implement WidgetConfig.vue
+      * Select widget type (chart, metric card, alert panel)
+      * Select data source (service, metric)
+      * Chart configuration (type, thresholds)
+    - Verify: Can add widgets, drag, resize
+    
+    Day 18: Dashboard Persistence & Templates
+    - Implement save to LocalStorage
+      * localStorage.setItem('dashboards', JSON.stringify(dashboards))
+    - Implement load from LocalStorage on mount
+    - Create 3 preset templates:
+      * Application Monitoring (error rate, response time, QPS)
+      * Infrastructure Monitoring (CPU, memory, disk, network)
+      * Business Monitoring (custom metrics)
+    - Implement template selector
+    - Verify: Dashboard saves, loads on refresh, templates work
+    
+    Day 19: Cross-Module Linking & Real-time Mode
+    - Implement cross-module navigation:
+      * Dashboard metric card -> Metrics view (service filter)
+      * Metrics anomaly -> Tracing view (service filter, time range)
+      * Trace span -> Logs view (traceId filter)
+      * Log traceId link -> Trace detail view
+    - Implement real-time mode for all views:
+      * setInterval to refresh data
+      * Intervals: 5s, 10s, 30s, 1min
+      * Smooth data updates (no flicker)
+    - Test cross-module flows end-to-end
+    - Verify: Links navigate correctly with context, real-time updates work
+    
+    ### PHASE 6: Polish & Documentation (Day 20)
+    
+    Day 20: Final Polish
+    - Visual refinements:
+      * Consistent spacing (8px grid)
+      * Smooth animations (300-500ms cubic-bezier)
+      * Loading states for all async operations
+      * Empty states with helpful messages
+      * Error boundaries for graceful failures
+    - Performance optimization:
+      * Chart lazy loading (Intersection Observer)
+      * Data aggregation for large time series
+      * Memoization for expensive computations
+    - Documentation:
+      * Write comprehensive README.md (see below)
+      * Add code comments for complex logic
+      * Document mock data generation
+    - Testing:
+      * Manual test all features
+      * Run performance profiling (Chrome DevTools)
+      * Check for console errors
+      * Build production bundle, verify size
+    - Verify: All acceptance criteria met (see validation_approach)
+    
+    ## 5.2 HANDLING MISSING DETAILS
+    
+    Ambiguities in PRD and Reasonable Defaults:
+    
+    1. Exact service names not specified
+       -> Use: api-gateway, user-service, order-service, payment-service, inventory-service
+    
+    2. Alert rule details not specified
+       -> Mock alert rules with common thresholds (e.g., error_rate > 0.05, response_time_p99 > 500ms)
+    
+    3. Log message templates not detailed
+       -> Create realistic templates per level (see algorithms section)
+    
+    4. Trace topology algorithm not specified
+       -> Use force-directed graph layout from AntV G6
+    
+    5. Custom dashboard widget types not exhaustive
+       -> Support: line chart, bar chart, pie chart, metric card, alert panel
+    
+    6. Real-time mode data update strategy not specified
+       -> Append new data points to existing series, shift time window forward
+    
+    7. Mobile responsiveness not required
+       -> Focus on desktop (1920x1080+), skip mobile breakpoints
+    
+    ## 5.3 VERIFICATION AT EACH PHASE
+    
+    After each day's work:
+    1. Run `npm run type-check` -> No errors
+    2. Run `npm run lint` -> No errors
+    3. Run `npm run dev` -> No console errors
+    4. Manual test implemented features
+    5. Commit to Git with descriptive message
+    
+    After each phase:
+    1. Run full app, test all implemented features
+    2. Check performance (FPS, load times)
+    3. Visual QA (dark theme, spacing, alignment)
+    4. Update README with completed features
+    
+    Final validation before delivery:
+    - All acceptance criteria checked (see validation_approach)
+    - Production build succeeds
+    - Bundle size reasonable (< 3MB)
+    - No security vulnerabilities
+    - Documentation complete
+    
+    ## 5.4 README.md STRUCTURE (Implement Last)
+    
+    ```markdown
+    # Observability Monitoring Platform - Frontend Demo
+    
+    Modern observability platform frontend demonstration system integrating metrics monitoring, distributed tracing, and log analysis.
+    
+    ## Features
+    
+    - **Overview Dashboard**: Service health, key metrics, alerts, trends
+    - **Metrics Monitoring**: Multi-dimensional metrics with comparison
+    - **Distributed Tracing**: Flame graphs, topology, span details
+    - **Log Analytics**: 10k+ logs with virtual scrolling, search, correlation
+    - **Custom Dashboards**: Drag-drop widget builder with templates
+    - **Dark Theme**: Grafana-inspired professional aesthetic
+    - **Real-time Mode**: Auto-refresh data at configurable intervals
+    - **Cross-Module Linking**: Navigate from metrics → traces → logs
+    
+    ## Tech Stack
+    
+    - Vue 3 (Composition API)
+    - TypeScript (strict mode)
+    - Vite
+    - Pinia (state management)
+    - Element Plus (UI components)
+    - Apache ECharts 5.x (charts)
+    - AntV G6 (topology graphs)
+    - Vue Virtual Scroller (performance)
+    - SCSS (styling)
+    
+    ## Installation
+    
+    ```bash
+    npm install
+    ```
+    
+    ## Development
+    
+    ```bash
+    npm run dev
+    # Opens http://localhost:3000
+    ```
+    
+    ## Build
+    
+    ```bash
+    npm run build
+    # Creates dist/ folder
+    ```
+    
+    ## Mock Data
+    
+    All data is generated client-side using sophisticated mock generators:
+    
+    - **Time Series**: Sine wave + random noise for realistic fluctuations
+    - **Traces**: Recursive tree generation for microservice call chains
+    - **Logs**: Poisson distribution for realistic temporal patterns
+    
+    ## Project Structure
+    
+    [Include file tree from file_structure section]
+    
+    ## Configuration
+    
+    - Time ranges: 5m, 15m, 1h, 6h, 24h, 7d
+    - Real-time intervals: 5s, 10s, 30s, 1min
+    - Services: api-gateway, user-service, order-service, etc.
+    - Log levels: DEBUG, INFO, WARN, ERROR, FATAL
+    
+    ## License
+    
+    MIT
+    ```
+    
+    ## 5.5 SUCCESS METRICS
+    
+    Delivery is successful when:
+    
+    Functionality (100% required):
+    - ✅ All 5 modules accessible and functional
+    - ✅ Mock data realistic and varied
+    - ✅ Time range affects all views
+    - ✅ Cross-module navigation works
+    
+    Performance (targets met):
+    - ✅ FCP < 2s
+    - ✅ Chart render < 500ms
+    - ✅ Virtual scroll > 50 FPS
+    
+    Visual (professional quality):
+    - ✅ Dark theme consistent
+    - ✅ Charts Grafana-like
+    - ✅ Smooth animations
+    
+    Code (production ready):
+    - ✅ No TS/ESLint errors
+    - ✅ Build succeeds
+    - ✅ Documentation complete
+```
+
+---
+
+## 📋 FINAL IMPLEMENTATION CHECKLIST
+
+### Before Starting
+- [ ] Read entire reproduction plan
+- [ ] Understand this is a frontend-only project (no backend)
+- [ ] Ensure Node.js 18+ installed
+- [ ] Allocate 20 days for implementation
+
+### Phase 1: Foundation (Days 1-3)
+- [ ] Project initialized with Vite + Vue 3 + TypeScript
+- [ ] All dependencies installed
+- [ ] Dark theme SCSS variables created
+- [ ] TypeScript interfaces defined
+- [ ] Mock data generators implemented and tested
+
+### Phase 2: Core Components (Days 4-7)
+- [ ] Layout and navigation working
+- [ ] BaseChart component functional
+- [ ] Time picker connected to store
+- [ ] Filters working
+- [ ] Common components (loading, empty, error) created
+
+### Phase 3: Dashboard & Metrics (Days 8-11)
+- [ ] Overview dashboard complete
+- [ ] Metrics monitoring view complete
+- [ ] Service comparison working
+- [ ] Percentile calculations correct
+
+### Phase 4: Tracing & Logs (Days 12-16)
+- [ ] Trace list and detail views complete
+- [ ] Flame graph rendering correctly
+- [ ] Log viewer with virtual scrolling working
+- [ ] Search and filtering performant
+
+### Phase 5: Advanced Features (Days 17-19)
+- [ ] Custom dashboard builder functional
+- [ ] LocalStorage persistence working
+- [ ] Cross-module linking complete
+- [ ] Real-time mode implemented
+
+### Phase 6: Polish (Day 20)
+- [ ] All visual refinements done
+- [ ] Performance optimizations applied
+- [ ] README.md complete
+- [ ] All acceptance criteria met
+
+**This plan provides everything needed to reproduce the entire system without accessing the original document.**

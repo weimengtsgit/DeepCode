@@ -46,7 +46,6 @@ from prompts.code_prompts import (
     CHAT_AGENT_PLANNING_PROMPT,
 )
 from utils.file_processor import FileProcessor
-from utils.config_path import get_config_path
 from workflows.code_implementation_workflow import CodeImplementationWorkflow
 from tools.pdf_downloader import move_file_to, download_file_to
 from workflows.code_implementation_workflow_index import (
@@ -60,6 +59,7 @@ from utils.llm_utils import (
     get_token_limits,
 )
 from workflows.agents.document_segmentation_agent import prepare_document_segments
+from workflows.agents.requirement_analysis_agent import RequirementAnalysisAgent
 
 # Environment configuration
 os.environ["PYTHONDONTWRITEBYTECODE"] = "1"  # Prevent .pyc file generation
@@ -197,20 +197,70 @@ def _adjust_params_for_retry(
     return new_max_tokens, new_temperature
 
 
-def get_default_search_server(config_path: str = None):
+async def execute_requirement_analysis_workflow(
+    user_input: str,
+    analysis_mode: str,
+    user_answers: Optional[Dict[str, str]] = None,
+    logger=None,
+    progress_callback: Optional[Callable[[int, str], None]] = None,
+) -> Dict[str, Any]:
+    """
+    Lightweight orchestrator to run requirement-analysis-specific flows.
+    """
+
+    normalized_input = (user_input or "").strip()
+    if not normalized_input:
+        return {
+            "status": "error",
+            "error": "User requirement input cannot be empty.",
+        }
+
+    user_answers = user_answers or {}
+
+    try:
+        async with RequirementAnalysisAgent(logger=logger) as agent:
+            if progress_callback:
+                progress_callback(5, "🤖 Initializing requirement analysis agent...")
+
+            if analysis_mode == "generate_questions":
+                questions = await agent.generate_guiding_questions(normalized_input)
+                if progress_callback:
+                    progress_callback(100, "🧠 Guiding questions generated.")
+                return {
+                    "status": "success",
+                    "result": json.dumps(questions, ensure_ascii=False),
+                }
+
+            if analysis_mode == "summarize_requirements":
+                summary = await agent.summarize_detailed_requirements(
+                    normalized_input, user_answers
+                )
+                if progress_callback:
+                    progress_callback(100, "📄 Requirement document created.")
+                return {"status": "success", "result": summary}
+
+            raise ValueError(f"Unsupported analysis_mode: {analysis_mode}")
+
+    except Exception as exc:
+        message = str(exc)
+        if logger:
+            try:
+                logger.error("Requirement analysis workflow failed: %s", message)
+            except Exception:
+                pass
+        return {"status": "error", "error": message}
+
+
+def get_default_search_server(config_path: str = "mcp_agent.config.yaml"):
     """
     Get the default search server from configuration.
 
     Args:
-        config_path: Path to the main configuration file (uses absolute path if None)
+        config_path: Path to the main configuration file
 
     Returns:
         str: The default search server name ("brave" or "bocha-mcp")
     """
-    # Use absolute path if not provided
-    if config_path is None:
-        config_path = get_config_path("mcp_agent.config.yaml")
-
     try:
         if os.path.exists(config_path):
             with open(config_path, "r", encoding="utf-8") as f:
@@ -1361,7 +1411,7 @@ async def orchestrate_codebase_intelligence_agent(
         index_result = await run_codebase_indexing(
             paper_dir=dir_info["paper_dir"],
             initial_plan_path=dir_info["initial_plan_path"],
-            config_path=None,  # Use absolute path from get_secrets_path()
+            config_path="mcp_agent.secrets.yaml",
             logger=logger,
         )
 

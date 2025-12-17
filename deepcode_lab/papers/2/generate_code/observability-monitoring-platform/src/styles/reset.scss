@@ -1,0 +1,587 @@
+// ============================================================================
+// RESET & NORMALIZE STYLES
+// ============================================================================
+// Establishes baseline styling for all HTML elements, ensuring consistent
+// rendering across browsers before component-specific styles are applied.
+// Based on modern CSS reset practices with dark theme optimizations.
+
+// ============================================================================
+// 1. ROOT & DOCUMENT LEVEL
+// ============================================================================
+
+html {
+  // Prevent font size adjustments in landscape mode on iOS
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+
+  // Smooth scrolling behavior
+  scroll-behavior: smooth;
+
+  // Set base font size for rem calculations
+  font-size: 16px;
+}
+
+body {
+  // Reset default margins
+  margin: 0;
+  padding: 0;
+
+  // Base typography
+  font-family: $font-family-base;
+  font-size: $font-size-base;
+  font-weight: $font-weight-normal;
+  line-height: $line-height-normal;
+  color: $color-text-primary;
+  background-color: $color-bg-primary;
+
+  // Smooth text rendering
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+
+  // Prevent text selection on double-tap
+  -webkit-tap-highlight-color: transparent;
+
+  // Ensure body fills viewport
+  min-height: 100vh;
+  min-height: 100dvh; // Dynamic viewport height for mobile
+}
+
+// ============================================================================
+// 2. TYPOGRAPHY RESETS
+// ============================================================================
+
+// Headings
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  padding: 0;
+  font-weight: $font-weight-bold;
+  line-height: $line-height-tight;
+  color: $color-text-primary;
+}
+
+h1 {
+  font-size: $font-size-3xl;
+  margin-bottom: $spacing-lg;
+}
+
+h2 {
+  font-size: $font-size-2xl;
+  margin-bottom: $spacing-md;
+}
+
+h3 {
+  font-size: $font-size-xl;
+  margin-bottom: $spacing-md;
+}
+
+h4 {
+  font-size: $font-size-lg;
+  margin-bottom: $spacing-sm;
+}
+
+h5 {
+  font-size: $font-size-base;
+  margin-bottom: $spacing-sm;
+}
+
+h6 {
+  font-size: $font-size-sm;
+  margin-bottom: $spacing-sm;
+}
+
+// Paragraphs
+p {
+  margin: 0;
+  padding: 0;
+  line-height: $line-height-normal;
+
+  &:not(:last-child) {
+    margin-bottom: $spacing-md;
+  }
+}
+
+// Lists
+ul, ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+li {
+  margin: 0;
+  padding: 0;
+}
+
+// Definition lists
+dl {
+  margin: 0;
+  padding: 0;
+}
+
+dt {
+  font-weight: $font-weight-bold;
+  margin-bottom: $spacing-xs;
+}
+
+dd {
+  margin: 0 0 $spacing-md 0;
+  padding-left: $spacing-md;
+}
+
+// Blockquotes
+blockquote {
+  margin: 0;
+  padding: $spacing-md $spacing-lg;
+  border-left: 4px solid $color-primary;
+  background-color: $color-bg-secondary;
+  color: $color-text-secondary;
+  font-style: italic;
+}
+
+// Code blocks
+code, pre {
+  font-family: $font-family-mono;
+  font-size: $font-size-sm;
+  background-color: $color-bg-secondary;
+  color: $color-text-primary;
+}
+
+code {
+  padding: 2px 6px;
+  border-radius: $border-radius-sm;
+  word-break: break-word;
+}
+
+pre {
+  padding: $spacing-md;
+  border-radius: $border-radius-md;
+  overflow-x: auto;
+  line-height: $line-height-normal;
+
+  code {
+    padding: 0;
+    background-color: transparent;
+    color: inherit;
+  }
+}
+
+// ============================================================================
+// 3. LINK RESETS
+// ============================================================================
+
+a {
+  color: $color-primary;
+  text-decoration: none;
+  background-color: transparent;
+  cursor: pointer;
+  transition: color $transition-normal ease-out;
+
+  &:hover {
+    color: $color-primary-hover;
+    text-decoration: underline;
+  }
+
+  &:active {
+    color: $color-primary-active;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-primary;
+    outline-offset: 2px;
+    border-radius: $border-radius-sm;
+  }
+
+  // Prevent outline on mouse click
+  &:focus:not(:focus-visible) {
+    outline: none;
+  }
+}
+
+// ============================================================================
+// 4. FORM ELEMENT RESETS
+// ============================================================================
+
+// Form containers
+form {
+  margin: 0;
+  padding: 0;
+}
+
+fieldset {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+legend {
+  padding: 0;
+  margin-bottom: $spacing-md;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+}
+
+// Labels
+label {
+  display: inline-block;
+  margin-bottom: $spacing-xs;
+  font-weight: $font-weight-medium;
+  color: $color-text-primary;
+  cursor: pointer;
+  user-select: none;
+}
+
+// Input fields
+input,
+textarea,
+select,
+button {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+  background-color: transparent;
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"],
+input[type="month"],
+input[type="week"],
+input[type="search"],
+input[type="tel"],
+input[type="url"],
+textarea,
+select {
+  width: 100%;
+  padding: $spacing-sm;
+  border: 1px solid $color-border;
+  border-radius: $border-radius-md;
+  background-color: $color-bg-secondary;
+  color: $color-text-primary;
+  transition: border-color $transition-normal ease-out,
+              background-color $transition-normal ease-out;
+
+  &:hover {
+    border-color: $color-border-light;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $color-primary;
+    background-color: $color-bg-tertiary;
+    box-shadow: 0 0 0 3px rgba($color-primary, 0.1);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: $color-bg-secondary;
+  }
+
+  &::placeholder {
+    color: $color-text-tertiary;
+    opacity: 1;
+  }
+}
+
+textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23d8d9da' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right $spacing-sm center;
+  padding-right: $spacing-lg;
+}
+
+// Checkboxes and radio buttons
+input[type="checkbox"],
+input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  margin: 0 $spacing-xs 0 0;
+  cursor: pointer;
+  accent-color: $color-primary;
+  vertical-align: middle;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
+
+// Buttons
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
+  padding: $spacing-sm $spacing-md;
+  border-radius: $border-radius-md;
+  background-color: $color-primary;
+  color: white;
+  font-weight: $font-weight-medium;
+  cursor: pointer;
+  transition: background-color $transition-normal ease-out,
+              transform $transition-normal ease-out,
+              box-shadow $transition-normal ease-out;
+
+  &:hover {
+    background-color: $color-primary-hover;
+    transform: translateY(-2px);
+    box-shadow: $shadow-md;
+  }
+
+  &:active {
+    background-color: $color-primary-active;
+    transform: translateY(0);
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-primary;
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+// ============================================================================
+// 5. TABLE RESETS
+// ============================================================================
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin-bottom: $spacing-md;
+}
+
+thead {
+  background-color: $color-bg-secondary;
+}
+
+th {
+  padding: $spacing-sm;
+  text-align: left;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+  border-bottom: 2px solid $color-border;
+}
+
+td {
+  padding: $spacing-sm;
+  border-bottom: 1px solid $color-border;
+  color: $color-text-primary;
+}
+
+tbody tr:hover {
+  background-color: $color-bg-secondary;
+}
+
+// ============================================================================
+// 6. MEDIA ELEMENT RESETS
+// ============================================================================
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border: none;
+}
+
+svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+video,
+audio {
+  max-width: 100%;
+  height: auto;
+}
+
+// ============================================================================
+// 7. UTILITY RESETS
+// ============================================================================
+
+// Remove default margins from common elements
+hr {
+  margin: $spacing-md 0;
+  border: none;
+  border-top: 1px solid $color-border;
+  height: 0;
+}
+
+// Horizontal rule styling
+hr {
+  background-color: transparent;
+}
+
+// Abbreviation
+abbr[title] {
+  border-bottom: 1px dotted $color-border;
+  cursor: help;
+  text-decoration: none;
+}
+
+// Mark/highlight
+mark {
+  background-color: rgba($color-warning, 0.2);
+  color: inherit;
+  padding: 2px 4px;
+  border-radius: $border-radius-sm;
+}
+
+// Small text
+small {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+}
+
+// Strong/bold
+strong, b {
+  font-weight: $font-weight-bold;
+}
+
+// Emphasis/italic
+em, i {
+  font-style: italic;
+}
+
+// ============================================================================
+// 8. ACCESSIBILITY & VISIBILITY
+// ============================================================================
+
+// Screen reader only content
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+// Focus visible for keyboard navigation
+:focus-visible {
+  outline: 2px solid $color-primary;
+  outline-offset: 2px;
+}
+
+// Reduce motion for accessibility
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+// ============================================================================
+// 9. SCROLLBAR STYLING (Webkit browsers)
+// ============================================================================
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: $color-bg-secondary;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: $color-border;
+  border-radius: $border-radius-sm;
+  transition: background-color $transition-normal ease-out;
+
+  &:hover {
+    background-color: $color-border-light;
+  }
+}
+
+// ============================================================================
+// 10. SELECTION STYLING
+// ============================================================================
+
+::selection {
+  background-color: $color-primary;
+  color: white;
+}
+
+::-moz-selection {
+  background-color: $color-primary;
+  color: white;
+}
+
+// ============================================================================
+// 11. PLACEHOLDER STYLING
+// ============================================================================
+
+::placeholder {
+  color: $color-text-tertiary;
+  opacity: 1;
+}
+
+::-ms-input-placeholder {
+  color: $color-text-tertiary;
+}
+
+// ============================================================================
+// 12. PRINT STYLES
+// ============================================================================
+
+@media print {
+  *,
+  *::before,
+  *::after {
+    background: transparent !important;
+    color: black !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  a,
+  a:visited {
+    text-decoration: underline;
+  }
+
+  a[href]::after {
+    content: " (" attr(href) ")";
+  }
+
+  img {
+    max-width: 100% !important;
+  }
+
+  @page {
+    margin: 0.5cm;
+  }
+
+  h1, h2, h3 {
+    orphans: 3;
+    widows: 3;
+  }
+}

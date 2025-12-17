@@ -25,7 +25,6 @@ import yaml
 sys.path.append(str(Path(__file__).parent.parent / "tools"))
 
 from tools.code_indexer import CodeIndexer
-from utils.config_path import get_secrets_path
 
 
 class CodebaseIndexWorkflow:
@@ -408,7 +407,7 @@ project/
         self,
         paper_dir: str,
         initial_plan_path: Optional[str] = None,
-        config_path: str = None,
+        config_path: str = "mcp_agent.secrets.yaml",
     ) -> Dict[str, Any]:
         """
         Run the complete code indexing workflow
@@ -416,15 +415,11 @@ project/
         Args:
             paper_dir: Paper directory path
             initial_plan_path: Initial plan file path (optional)
-            config_path: API configuration file path (uses absolute path if None)
+            config_path: API configuration file path
 
         Returns:
             Index result dictionary
         """
-        # Use absolute path if not provided
-        if config_path is None:
-            config_path = get_secrets_path()
-
         try:
             self.logger.info("🚀 Starting codebase index workflow...")
 
@@ -687,7 +682,7 @@ project/
 async def run_codebase_indexing(
     paper_dir: str,
     initial_plan_path: Optional[str] = None,
-    config_path: str = None,
+    config_path: str = "mcp_agent.secrets.yaml",
     logger=None,
 ) -> Dict[str, Any]:
     """
@@ -696,16 +691,12 @@ async def run_codebase_indexing(
     Args:
         paper_dir: Paper directory path
         initial_plan_path: Initial plan file path (optional)
-        config_path: API configuration file path (uses absolute path if None)
+        config_path: API configuration file path
         logger: Logger instance (optional)
 
     Returns:
         Index result dictionary
     """
-    # Use absolute path if not provided
-    if config_path is None:
-        config_path = get_secrets_path()
-
     workflow = CodebaseIndexWorkflow(logger=logger)
     workflow.print_banner()
 

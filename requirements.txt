@@ -4,8 +4,7 @@ anthropic
 asyncio-mqtt
 docling
 google-genai
-mcp-agent>=0.2.6  # Required for MCP 1.20+ compatibility
-mcp>=1.20.0       # Ensure MCP version compatibility
+mcp-agent
 mcp-server-git
 nest_asyncio
 openai

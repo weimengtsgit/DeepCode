@@ -1,0 +1,441 @@
+// ============================================================================
+// DARK THEME - Primary theme for Observability Monitoring Platform
+// ============================================================================
+// This file defines the complete dark theme color palette and CSS custom
+// properties used throughout the application. All components reference these
+// variables for consistent dark theme appearance optimized for monitoring
+// dashboards (reduces eye strain, improves chart readability).
+//
+// Color Palette Strategy:
+// - Background: #0b0c0e (very dark, almost black)
+// - Text Primary: #d8d9da (light gray, high contrast)
+// - Semantic Colors: Green (success), Orange (warning), Red (error), Blue (info)
+// - Contrast Ratios: All meet WCAG AA minimum (4.5:1)
+// ============================================================================
+
+// Import base variables for reference (spacing, typography, etc.)
+@import '../variables.scss';
+
+// ============================================================================
+// ROOT ELEMENT - CSS CUSTOM PROPERTIES (for runtime theme switching)
+// ============================================================================
+:root {
+  // ========================================================================
+  // BACKGROUND COLORS
+  // ========================================================================
+  --color-bg-primary: #0b0c0e;           // Main background (darkest)
+  --color-bg-secondary: #181b1f;         // Secondary background (cards, panels)
+  --color-bg-tertiary: #242a33;          // Tertiary background (hover states)
+  --color-bg-overlay: rgba(11, 12, 14, 0.8);  // Semi-transparent overlay
+  --color-bg-elevated: #2d3139;          // Elevated surfaces (modals, dropdowns)
+
+  // ========================================================================
+  // TEXT COLORS
+  // ========================================================================
+  --color-text-primary: #d8d9da;         // Primary text (high contrast)
+  --color-text-secondary: #a8aab0;       // Secondary text (labels, hints)
+  --color-text-tertiary: #7a7d84;        // Tertiary text (disabled, muted)
+  --color-text-inverse: #0b0c0e;         // Inverse text (on light backgrounds)
+  --color-text-muted: #5a5d64;           // Muted text (very low contrast)
+
+  // ========================================================================
+  // SEMANTIC COLORS (Status & Intent)
+  // ========================================================================
+  --color-success: #73bf69;              // Success, healthy, positive (green)
+  --color-success-light: #a8d5a8;        // Light success (hover states)
+  --color-success-dark: #5a9a52;         // Dark success (active states)
+
+  --color-warning: #ff9830;              // Warning, degraded, caution (orange)
+  --color-warning-light: #ffb366;        // Light warning (hover states)
+  --color-warning-dark: #cc7a24;         // Dark warning (active states)
+
+  --color-error: #f2495c;                // Error, critical, failure (red)
+  --color-error-light: #f5858f;          // Light error (hover states)
+  --color-error-dark: #c23847;           // Dark error (active states)
+
+  --color-info: #3274d9;                 // Info, informational (blue)
+  --color-info-light: #5a8fe6;           // Light info (hover states)
+  --color-info-dark: #2559a8;            // Dark info (active states)
+
+  // ========================================================================
+  // PRIMARY ACTION COLORS
+  // ========================================================================
+  --color-primary: #3274d9;              // Primary action button (blue)
+  --color-primary-hover: #5a8fe6;        // Primary button hover state
+  --color-primary-active: #2559a8;       // Primary button active state
+  --color-primary-disabled: #5a5d64;     // Primary button disabled state
+  --color-primary-alpha: rgba(50, 116, 217, 0.1);  // Primary with 10% opacity
+
+  // ========================================================================
+  // BORDER COLORS
+  // ========================================================================
+  --color-border: #3a3f48;               // Primary border color
+  --color-border-light: #2d3139;         // Light border (subtle)
+  --color-border-dark: #4a5058;          // Dark border (prominent)
+  --color-border-focus: #3274d9;         // Focus state border (blue)
+
+  // ========================================================================
+  // CHART COLORS (8-color palette for multi-series visualization)
+  // ========================================================================
+  --color-chart-1: #3274d9;              // Blue (primary)
+  --color-chart-2: #73bf69;              // Green (success)
+  --color-chart-3: #ff9830;              // Orange (warning)
+  --color-chart-4: #f2495c;              // Red (error)
+  --color-chart-5: #a8d5a8;              // Light green
+  --color-chart-6: #ffd966;              // Yellow
+  --color-chart-7: #5dade2;              // Cyan
+  --color-chart-8: #c23847;              // Dark red
+
+  // ========================================================================
+  // SPECIAL COLORS
+  // ========================================================================
+  --color-link: #3274d9;                 // Link text color (blue)
+  --color-link-hover: #5a8fe6;           // Link hover color
+  --color-link-visited: #7a5fa8;         // Visited link color (purple)
+
+  --color-selection-bg: rgba(50, 116, 217, 0.3);  // Text selection background
+  --color-selection-text: #d8d9da;       // Text selection text color
+
+  --color-placeholder: #7a7d84;          // Input placeholder text
+  --color-disabled: #5a5d64;             // Disabled element color
+
+  // ========================================================================
+  // SHADOW COLORS (for elevation effects)
+  // ========================================================================
+  --color-shadow-sm: rgba(0, 0, 0, 0.1);
+  --color-shadow-md: rgba(0, 0, 0, 0.2);
+  --color-shadow-lg: rgba(0, 0, 0, 0.3);
+  --color-shadow-xl: rgba(0, 0, 0, 0.4);
+
+  // ========================================================================
+  // GRADIENT COLORS
+  // ========================================================================
+  --gradient-primary: linear-gradient(135deg, #3274d9 0%, #5a8fe6 100%);
+  --gradient-success: linear-gradient(135deg, #73bf69 0%, #a8d5a8 100%);
+  --gradient-warning: linear-gradient(135deg, #ff9830 0%, #ffb366 100%);
+  --gradient-error: linear-gradient(135deg, #f2495c 0%, #f5858f 100%);
+  --gradient-info: linear-gradient(135deg, #3274d9 0%, #5a8fe6 100%);
+
+  // ========================================================================
+  // OPACITY SCALE (for transparency effects)
+  // ========================================================================
+  --opacity-0: 0;
+  --opacity-10: 0.1;
+  --opacity-20: 0.2;
+  --opacity-30: 0.3;
+  --opacity-40: 0.4;
+  --opacity-50: 0.5;
+  --opacity-60: 0.6;
+  --opacity-70: 0.7;
+  --opacity-80: 0.8;
+  --opacity-90: 0.9;
+  --opacity-100: 1;
+}
+
+// ============================================================================
+// SCSS VARIABLE ASSIGNMENTS (for use in SCSS files)
+// ============================================================================
+// These variables are used in component SCSS files that don't support
+// CSS custom properties. They're set to the same values as above.
+
+// Background Colors
+$color-bg-primary: #0b0c0e;
+$color-bg-secondary: #181b1f;
+$color-bg-tertiary: #242a33;
+$color-bg-overlay: rgba(11, 12, 14, 0.8);
+$color-bg-elevated: #2d3139;
+
+// Text Colors
+$color-text-primary: #d8d9da;
+$color-text-secondary: #a8aab0;
+$color-text-tertiary: #7a7d84;
+$color-text-inverse: #0b0c0e;
+$color-text-muted: #5a5d64;
+
+// Semantic Colors
+$color-success: #73bf69;
+$color-success-light: #a8d5a8;
+$color-success-dark: #5a9a52;
+
+$color-warning: #ff9830;
+$color-warning-light: #ffb366;
+$color-warning-dark: #cc7a24;
+
+$color-error: #f2495c;
+$color-error-light: #f5858f;
+$color-error-dark: #c23847;
+
+$color-info: #3274d9;
+$color-info-light: #5a8fe6;
+$color-info-dark: #2559a8;
+
+// Primary Action Colors
+$color-primary: #3274d9;
+$color-primary-hover: #5a8fe6;
+$color-primary-active: #2559a8;
+$color-primary-disabled: #5a5d64;
+$color-primary-alpha: rgba(50, 116, 217, 0.1);
+
+// Border Colors
+$color-border: #3a3f48;
+$color-border-light: #2d3139;
+$color-border-dark: #4a5058;
+$color-border-focus: #3274d9;
+
+// Chart Colors
+$color-chart-1: #3274d9;
+$color-chart-2: #73bf69;
+$color-chart-3: #ff9830;
+$color-chart-4: #f2495c;
+$color-chart-5: #a8d5a8;
+$color-chart-6: #ffd966;
+$color-chart-7: #5dade2;
+$color-chart-8: #c23847;
+
+// Special Colors
+$color-link: #3274d9;
+$color-link-hover: #5a8fe6;
+$color-link-visited: #7a5fa8;
+
+$color-selection-bg: rgba(50, 116, 217, 0.3);
+$color-selection-text: #d8d9da;
+
+$color-placeholder: #7a7d84;
+$color-disabled: #5a5d64;
+
+// Shadow Colors
+$color-shadow-sm: rgba(0, 0, 0, 0.1);
+$color-shadow-md: rgba(0, 0, 0, 0.2);
+$color-shadow-lg: rgba(0, 0, 0, 0.3);
+$color-shadow-xl: rgba(0, 0, 0, 0.4);
+
+// Gradients
+$gradient-primary: linear-gradient(135deg, #3274d9 0%, #5a8fe6 100%);
+$gradient-success: linear-gradient(135deg, #73bf69 0%, #a8d5a8 100%);
+$gradient-warning: linear-gradient(135deg, #ff9830 0%, #ffb366 100%);
+$gradient-error: linear-gradient(135deg, #f2495c 0%, #f5858f 100%);
+$gradient-info: linear-gradient(135deg, #3274d9 0%, #5a8fe6 100%);
+
+// ============================================================================
+// DARK THEME APPLICATION
+// ============================================================================
+// Apply dark theme colors to document root and body elements
+
+html {
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+}
+
+body {
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+}
+
+// ============================================================================
+// COMPONENT-SPECIFIC DARK THEME OVERRIDES
+// ============================================================================
+
+// Links
+a {
+  color: var(--color-link);
+
+  &:hover {
+    color: var(--color-link-hover);
+  }
+
+  &:visited {
+    color: var(--color-link-visited);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-border-focus);
+    outline-offset: 2px;
+  }
+}
+
+// Buttons
+button,
+input[type='button'],
+input[type='submit'],
+input[type='reset'] {
+  background-color: var(--color-primary);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+
+  &:hover {
+    background-color: var(--color-primary-hover);
+  }
+
+  &:active {
+    background-color: var(--color-primary-active);
+  }
+
+  &:disabled {
+    background-color: var(--color-primary-disabled);
+    color: var(--color-text-tertiary);
+    cursor: not-allowed;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-border-focus);
+    outline-offset: 2px;
+  }
+}
+
+// Form Inputs
+input[type='text'],
+input[type='email'],
+input[type='password'],
+input[type='search'],
+input[type='url'],
+input[type='number'],
+input[type='date'],
+input[type='time'],
+textarea,
+select {
+  background-color: var(--color-bg-secondary);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+
+  &::placeholder {
+    color: var(--color-placeholder);
+  }
+
+  &:focus {
+    background-color: var(--color-bg-tertiary);
+    border-color: var(--color-border-focus);
+    outline: none;
+  }
+
+  &:disabled {
+    background-color: var(--color-bg-tertiary);
+    color: var(--color-text-tertiary);
+    cursor: not-allowed;
+  }
+}
+
+// Text Selection
+::selection {
+  background-color: var(--color-selection-bg);
+  color: var(--color-selection-text);
+}
+
+// Scrollbar (Webkit browsers)
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--color-bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-border);
+  border-radius: 4px;
+
+  &:hover {
+    background-color: var(--color-border-dark);
+  }
+}
+
+// Tables
+table {
+  background-color: var(--color-bg-secondary);
+  border-collapse: collapse;
+}
+
+thead {
+  background-color: var(--color-bg-tertiary);
+  border-bottom: 1px solid var(--color-border);
+}
+
+th {
+  color: var(--color-text-primary);
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 600;
+}
+
+td {
+  color: var(--color-text-primary);
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+tbody tr:hover {
+  background-color: var(--color-bg-tertiary);
+}
+
+// Code blocks
+code,
+pre {
+  background-color: var(--color-bg-tertiary);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  font-family: $font-family-mono;
+}
+
+// Horizontal Rule
+hr {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  color: var(--color-border);
+}
+
+// Blockquote
+blockquote {
+  border-left: 4px solid var(--color-primary);
+  color: var(--color-text-secondary);
+  padding-left: 16px;
+  margin-left: 0;
+}
+
+// ============================================================================
+// ACCESSIBILITY - REDUCED MOTION SUPPORT
+// ============================================================================
+// Disable animations for users with motion sensitivity preferences
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+// ============================================================================
+// PRINT STYLES - Dark theme adjustments for printing
+// ============================================================================
+
+@media print {
+  html,
+  body {
+    background-color: white;
+    color: black;
+  }
+
+  a {
+    color: blue;
+    text-decoration: underline;
+  }
+
+  button,
+  input[type='button'],
+  input[type='submit'] {
+    background-color: white;
+    color: black;
+    border: 1px solid black;
+  }
+
+  input[type='text'],
+  textarea,
+  select {
+    background-color: white;
+    color: black;
+    border: 1px solid black;
+  }
+}

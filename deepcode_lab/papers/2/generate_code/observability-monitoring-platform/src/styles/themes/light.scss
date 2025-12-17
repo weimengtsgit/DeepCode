@@ -1,0 +1,350 @@
+// Light Theme - Alternative color palette for light mode
+// Provides WCAG AA compliant colors for light theme with same structure as dark theme
+// CSS custom properties enable runtime theme switching
+
+:root[data-theme="light"] {
+  // ============================================================================
+  // BACKGROUND COLORS (Light theme)
+  // ============================================================================
+  --color-bg-primary: #ffffff;           // Main background (white)
+  --color-bg-secondary: #f5f5f5;         // Secondary background (light gray)
+  --color-bg-tertiary: #eeeeee;          // Tertiary background (medium gray)
+
+  // ============================================================================
+  // TEXT COLORS (Light theme)
+  // ============================================================================
+  --color-text-primary: #1a1a1a;         // Primary text (dark gray, 14:1 contrast on white)
+  --color-text-secondary: #4a4a4a;       // Secondary text (medium gray, 8.5:1 contrast)
+  --color-text-tertiary: #7a7a7a;        // Tertiary text (light gray, 5.5:1 contrast)
+
+  // ============================================================================
+  // SEMANTIC STATUS COLORS (Light theme)
+  // ============================================================================
+  --color-success: #2e7d32;               // Success/healthy (dark green)
+  --color-warning: #f57c00;               // Warning/degraded (dark orange)
+  --color-error: #c62828;                 // Error/critical (dark red)
+  --color-info: #1565c0;                  // Info/neutral (dark blue)
+
+  // ============================================================================
+  // PRIMARY ACTION COLORS (Light theme)
+  // ============================================================================
+  --color-primary: #1976d2;               // Primary action (blue)
+  --color-primary-hover: #1565c0;         // Hover state (darker blue)
+  --color-primary-active: #0d47a1;        // Active state (darkest blue)
+
+  // ============================================================================
+  // BORDER COLORS (Light theme)
+  // ============================================================================
+  --color-border: #d0d0d0;                // Standard border (medium gray)
+  --color-border-light: #e0e0e0;          // Light border (light gray)
+  --color-border-dark: #a0a0a0;           // Dark border (darker gray)
+  --color-border-focus: #1976d2;          // Focus border (primary blue)
+
+  // ============================================================================
+  // CHART COLORS (Light theme - 8-color palette)
+  // ============================================================================
+  // Adjusted for light background with good contrast and colorblind accessibility
+  --color-chart-1: #1f77b4;               // Blue
+  --color-chart-2: #2ca02c;               // Green
+  --color-chart-3: #d62728;               // Red
+  --color-chart-4: #ff7f0e;               // Orange
+  --color-chart-5: #9467bd;               // Purple
+  --color-chart-6: #8c564b;               // Brown
+  --color-chart-7: #e377c2;               // Pink
+  --color-chart-8: #7f7f7f;               // Gray
+
+  // ============================================================================
+  // GRADIENT DEFINITIONS (Light theme)
+  // ============================================================================
+  --gradient-primary: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
+  --gradient-success: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+  --gradient-warning: linear-gradient(135deg, #f57c00 0%, #e65100 100%);
+  --gradient-error: linear-gradient(135deg, #c62828 0%, #b71c1c 100%);
+
+  // ============================================================================
+  // OPACITY SCALE (Light theme - same as dark)
+  // ============================================================================
+  --opacity-0: 0;
+  --opacity-10: 0.1;
+  --opacity-20: 0.2;
+  --opacity-30: 0.3;
+  --opacity-40: 0.4;
+  --opacity-50: 0.5;
+  --opacity-60: 0.6;
+  --opacity-70: 0.7;
+  --opacity-80: 0.8;
+  --opacity-90: 0.9;
+  --opacity-100: 1;
+}
+
+// ============================================================================
+// LIGHT THEME SCSS VARIABLES (for component SCSS files)
+// ============================================================================
+
+// Background colors
+$color-bg-primary: #ffffff;
+$color-bg-secondary: #f5f5f5;
+$color-bg-tertiary: #eeeeee;
+
+// Text colors
+$color-text-primary: #1a1a1a;
+$color-text-secondary: #4a4a4a;
+$color-text-tertiary: #7a7a7a;
+
+// Semantic colors
+$color-success: #2e7d32;
+$color-warning: #f57c00;
+$color-error: #c62828;
+$color-info: #1565c0;
+
+// Primary action colors
+$color-primary: #1976d2;
+$color-primary-hover: #1565c0;
+$color-primary-active: #0d47a1;
+
+// Border colors
+$color-border: #d0d0d0;
+$color-border-light: #e0e0e0;
+$color-border-dark: #a0a0a0;
+$color-border-focus: #1976d2;
+
+// Chart colors
+$chart-colors: (
+  #1f77b4,  // Blue
+  #2ca02c,  // Green
+  #d62728,  // Red
+  #ff7f0e,  // Orange
+  #9467bd,  // Purple
+  #8c564b,  // Brown
+  #e377c2,  // Pink
+  #7f7f7f   // Gray
+);
+
+// Gradients
+$gradient-primary: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
+$gradient-success: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+$gradient-warning: linear-gradient(135deg, #f57c00 0%, #e65100 100%);
+$gradient-error: linear-gradient(135deg, #c62828 0%, #b71c1c 100%);
+
+// ============================================================================
+// LIGHT THEME ELEMENT OVERRIDES
+// ============================================================================
+
+// HTML/Body styling for light theme
+html[data-theme="light"],
+html[data-theme="light"] body {
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+}
+
+// Link styling for light theme
+html[data-theme="light"] a {
+  color: var(--color-primary);
+
+  &:hover {
+    color: var(--color-primary-hover);
+  }
+
+  &:active {
+    color: var(--color-primary-active);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-border-focus);
+    outline-offset: 2px;
+  }
+}
+
+// Button styling for light theme
+html[data-theme="light"] button,
+html[data-theme="light"] .btn {
+  background-color: var(--color-bg-secondary);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+
+  &:hover {
+    background-color: var(--color-bg-tertiary);
+    border-color: var(--color-border-dark);
+  }
+
+  &:active {
+    background-color: var(--color-bg-tertiary);
+    border-color: var(--color-border-dark);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-border-focus);
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  // Primary button variant
+  &.btn-primary {
+    background-color: var(--color-primary);
+    color: #ffffff;
+    border-color: var(--color-primary);
+
+    &:hover {
+      background-color: var(--color-primary-hover);
+      border-color: var(--color-primary-hover);
+    }
+
+    &:active {
+      background-color: var(--color-primary-active);
+      border-color: var(--color-primary-active);
+    }
+  }
+
+  // Danger button variant
+  &.btn-danger {
+    background-color: var(--color-error);
+    color: #ffffff;
+    border-color: var(--color-error);
+
+    &:hover {
+      background-color: darken(#c62828, 10%);
+      border-color: darken(#c62828, 10%);
+    }
+  }
+}
+
+// Form input styling for light theme
+html[data-theme="light"] input,
+html[data-theme="light"] textarea,
+html[data-theme="light"] select {
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+
+  &:focus {
+    border-color: var(--color-border-focus);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
+  }
+
+  &::placeholder {
+    color: var(--color-text-tertiary);
+  }
+}
+
+// Table styling for light theme
+html[data-theme="light"] table {
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  border-collapse: collapse;
+
+  thead {
+    background-color: var(--color-bg-secondary);
+    border-bottom: 2px solid var(--color-border);
+  }
+
+  th {
+    color: var(--color-text-primary);
+    font-weight: 600;
+    padding: 12px;
+    text-align: left;
+  }
+
+  td {
+    padding: 12px;
+    border-bottom: 1px solid var(--color-border-light);
+  }
+
+  tbody tr:hover {
+    background-color: var(--color-bg-secondary);
+  }
+}
+
+// Card styling for light theme
+html[data-theme="light"] .card {
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+}
+
+// Code block styling for light theme
+html[data-theme="light"] code,
+html[data-theme="light"] pre {
+  background-color: var(--color-bg-tertiary);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+}
+
+// Scrollbar styling for light theme (webkit browsers)
+html[data-theme="light"] ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+html[data-theme="light"] ::-webkit-scrollbar-track {
+  background: var(--color-bg-secondary);
+}
+
+html[data-theme="light"] ::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 4px;
+
+  &:hover {
+    background: var(--color-border-dark);
+  }
+}
+
+// Selection styling for light theme
+html[data-theme="light"] ::selection {
+  background-color: var(--color-primary);
+  color: #ffffff;
+}
+
+html[data-theme="light"] ::-moz-selection {
+  background-color: var(--color-primary);
+  color: #ffffff;
+}
+
+// ============================================================================
+// LIGHT THEME PRINT STYLES
+// ============================================================================
+
+@media print {
+  html[data-theme="light"] {
+    background-color: #ffffff;
+    color: #000000;
+  }
+
+  html[data-theme="light"] a {
+    color: #0000ee;
+    text-decoration: underline;
+  }
+
+  html[data-theme="light"] button,
+  html[data-theme="light"] .btn {
+    border: 1px solid #000000;
+    background-color: #ffffff;
+    color: #000000;
+  }
+}
+
+// ============================================================================
+// LIGHT THEME ACCESSIBILITY - REDUCED MOTION
+// ============================================================================
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme="light"] * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
