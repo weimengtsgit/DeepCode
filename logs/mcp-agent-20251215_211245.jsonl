@@ -1,8 +1,0 @@
-{"level":"ERROR","timestamp":"2025-12-15T21:12:52.589644","namespace":"mcp_agent.executor.executor","message":"Error executing task: peer closed connection without sending complete message body (incomplete chunked read)"}
-{"level":"ERROR","timestamp":"2025-12-15T21:12:52.589748","namespace":"mcp_agent.workflows.llm.augmented_llm_anthropic.RequirementAnalysisAgent","message":"Error: peer closed connection without sending complete message body (incomplete chunked read)"}
-{"level":"INFO","timestamp":"2025-12-15T21:12:52.591687","namespace":"mcp_agent.mcp.mcp_aggregator.RequirementAnalysisAgent","message":"Last aggregator closing, shutting down all persistent connections..."}
-{"level":"INFO","timestamp":"2025-12-15T21:12:52.592069","namespace":"mcp_agent.mcp.mcp_connection_manager","message":"Disconnecting all persistent server connections..."}
-{"level":"INFO","timestamp":"2025-12-15T21:15:33.653296","namespace":"mcp_agent.mcp.mcp_aggregator.RequirementAnalysisAgent","message":"Last aggregator closing, shutting down all persistent connections..."}
-{"level":"INFO","timestamp":"2025-12-15T21:15:33.653782","namespace":"mcp_agent.mcp.mcp_connection_manager","message":"Disconnecting all persistent server connections..."}
-{"level":"INFO","timestamp":"2025-12-15T21:20:54.614734","namespace":"mcp_agent.mcp.mcp_aggregator.RequirementAnalysisAgent","message":"Last aggregator closing, shutting down all persistent connections..."}
-{"level":"INFO","timestamp":"2025-12-15T21:20:54.615081","namespace":"mcp_agent.mcp.mcp_connection_manager","message":"Disconnecting all persistent server connections..."}
