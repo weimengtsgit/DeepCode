@@ -1,0 +1,10 @@
+{"level":"INFO","timestamp":"2025-12-18T10:10:45.428299","namespace":"mcp_agent.core.context","message":"Configuring logger with level: info"}
+{"level":"INFO","timestamp":"2025-12-18T10:10:45.971508","namespace":"mcp_agent.paper_to_code","message":"Loading subagents from configuration..."}
+{"level":"INFO","timestamp":"2025-12-18T10:10:45.975224","namespace":"mcp_agent.paper_to_code","message":"MCPApp initialized","data":{"data":{"progress_action":"Running","target":"paper_to_code","agent_name":"mcp_application_loop","session_id":"54ff3532-8d1f-4626-b44b-d16ef69ae58e"}}}
+{"level":"INFO","timestamp":"2025-12-18T10:10:46.932006","namespace":"mcp_agent.mcp.mcp_connection_manager","message":"bocha-mcp: Up and running with a persistent connection!"}
+{"level":"ERROR","timestamp":"2025-12-18T10:10:50.523114","namespace":"mcp_agent.executor.executor","message":"Error executing task: Error code: 400 - {'message': 'model not found or invalid'}"}
+{"level":"ERROR","timestamp":"2025-12-18T10:10:50.523227","namespace":"mcp_agent.workflows.llm.augmented_llm_openai.ResearchAnalyzerAgent","message":"Error: Error code: 400 - {'message': 'model not found or invalid'}"}
+{"level":"INFO","timestamp":"2025-12-18T10:10:50.560013","namespace":"mcp_agent.mcp.mcp_aggregator.ResearchAnalyzerAgent","message":"Last aggregator closing, shutting down all persistent connections..."}
+{"level":"INFO","timestamp":"2025-12-18T10:10:50.560773","namespace":"mcp_agent.mcp.mcp_connection_manager","message":"Disconnecting all persistent server connections..."}
+{"level":"INFO","timestamp":"2025-12-18T10:10:50.589539","namespace":"mcp_agent.mcp.mcp_connection_manager","message":"bocha-mcp: Requesting shutdown..."}
+{"level":"INFO","timestamp":"2025-12-18T10:10:50.798291","namespace":"mcp_agent.mcp.mcp_connection_manager","message":"All persistent server connections signaled to disconnect."}

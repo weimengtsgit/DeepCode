@@ -1,0 +1,215 @@
+```yaml
+complete_reproduction_plan:
+  paper_info:
+    title: "Observability Monitoring Platform (Frontend Demo)"
+    core_contribution: "A high-fidelity, pure frontend simulation of a full-stack observability platform (Metrics, Tracing, Logs) using complex mock data generation algorithms to emulate real-world traffic, latency, and system topology without a backend."
+
+  # SECTION 1: File Structure Design
+  file_structure: |
+    observability-demo/
+    ├── src/
+    │   ├── assets/                 # Static assets (fonts, icons)
+    │   ├── components/
+    │   │   ├── Charts/
+    │   │   │   ├── BaseEChart.vue      # Generic ECharts wrapper
+    │   │   │   ├── MetricSparkline.vue # Mini trend chart
+    │   │   │   └── TraceGantt.vue      # Custom waterfall visualization
+    │   │   ├── Topology/
+    │   │   │   └── ServiceGraph.vue    # AntV G6 topology map
+    │   │   ├── Logs/
+    │   │   │   └── LogStream.vue       # Virtual scroller component
+    │   │   └── Layout/
+    │   │       ├── MainLayout.vue      # Sidebar & Global Header
+    │   │       └── TimeControls.vue    # Global time range picker
+    │   ├── composables/
+    │   │   ├── useTimeRange.ts         # Global time state logic
+    │   │   ├── useMockData.ts          # Data fetching simulation hook
+    │   │   └── useChartTheme.ts        # Dark mode ECharts config
+    │   ├── mock/                       # The "Virtual Backend"
+    │   │   ├── generators/
+    │   │   │   ├── mathUtils.ts        # Sine wave & noise algorithms
+    │   │   │   └── traceGenerator.ts   # Recursive tree algorithms
+    │   │   ├── index.ts                # Mock server entry point
+    │   │   └── definitions.ts          # Types: MetricPoint, Span, LogEntry
+    │   ├── stores/
+    │   │   ├── globalStore.ts          # App state (theme, sidebar)
+    │   │   └── dataStore.ts            # Cached metrics/traces
+    │   ├── styles/
+    │   │   ├── main.scss               # Global styles & resets
+    │   │   └── variables.scss          # Color palette (Dark Mode)
+    │   ├── views/
+    │   │   ├── DashboardView.vue       # Overview grid
+    │   │   ├── MetricsView.vue         # Detailed charts
+    │   │   ├── TracingView.vue         # Trace list & details
+    │   │   └── LogsView.vue            # Log search & view
+    │   ├── App.vue
+    │   └── main.ts
+    ├── package.json
+    ├── vite.config.ts
+    ├── tsconfig.json
+    ├── README.md                       # Documentation (Implement LAST)
+    └── requirements.txt                # Dependency list (Implement LAST)
+
+  # SECTION 2: Implementation Components
+  implementation_components: |
+    # COMPONENT 1: Mock Data Engine (The "Brain")
+    # Location: src/mock/generators/
+    # Purpose: Generate realistic, correlated data for all 3 pillars (Metrics, Traces, Logs)
+    
+    1. Time-Series Generator (mathUtils.ts):
+       - Algorithm: V(t) = Base + Trend + Seasonality + Noise + Anomaly
+       - Formula: 
+         val = base + (amplitude * sin(t / period)) + (random() - 0.5) * noise_factor
+       - Anomaly Injection: 5% chance to inject spike (val * 2.0)
+       - Output: Array<{ timestamp: number, value: number }>
+    
+    2. Distributed Trace Generator (traceGenerator.ts):
+       - Algorithm: Recursive Depth-First Tree Generation
+       - Constraints: 
+         - child.startTime >= parent.startTime
+         - child.endTime <= parent.endTime
+         - maxDepth = random(3, 8)
+       - Structure: 
+         Span { traceId, spanId, parentId, service, duration, status }
+       - Logic: 
+         function createSpan(depth, parentTime):
+           duration = random(10, 500)
+           children = random(0, 3)
+           loop children: createSpan(depth+1, parentTime + offset)
+    
+    3. Log Stream Generator:
+       - Logic: Generate logs correlated to Trace Spans
+       - content = TemplateString + TraceID
+       - Volume: Support generating 10k+ items for performance testing
+
+    # COMPONENT 2: Visualization Layer
+    # Location: src/components/Charts/ & src/components/Topology/
+    
+    1. BaseEChart.vue:
+       - Reactive resize listener (ResizeObserver)
+       - Theme injection (Grafana Dark Theme: #0b0c0e bg)
+       - Prop: 'options' (ECharts config object)
+    
+    2. ServiceGraph.vue (AntV G6):
+       - Nodes: Services (Auth, API, DB)
+       - Edges: Calls between services
+       - Layout: Dagre or Force-directed
+    
+    3. TraceGantt.vue:
+       - Custom rendering of spans
+       - Left offset = (span.startTime - trace.startTime) / totalDuration
+       - Width = span.duration / totalDuration
+
+    # COMPONENT 3: Performance UI
+    # Location: src/components/Logs/LogStream.vue
+    
+    1. Virtual Scroller:
+       - Implementation: vue-virtual-scroller
+       - Requirement: Render window of ~20 items from list of 10,000+
+       - Row Styling: Color code by level (INFO=Blue, WARN=Orange, ERROR=Red)
+
+    # COMPONENT 4: State Management
+    # Location: src/stores/ & src/composables/
+    
+    1. Global Time Control (useTimeRange.ts):
+       - State: { start: Date, end: Date, refreshRate: number }
+       - Action: Trigger data refetch in all active views when time changes
+
+    # COMPONENT 5: Styling System
+    # Location: src/styles/
+    
+    1. Color Palette (variables.scss):
+       - $bg-body: #0b0c0e
+       - $bg-panel: #1f1f24
+       - $primary: #3274d9
+       - $success: #73bf69
+       - $error: #f2495c
+
+  # SECTION 3: Validation & Evaluation
+  validation_approach: |
+    # 1. Visual Verification (The "Turing Test" for Monitoring)
+    - Metric Realism:
+      - Verify charts show "organic" curves (sine waves), not random static.
+      - Check for occasional spikes (anomalies).
+    - Topology Correctness:
+      - Verify Service Graph connections match the Trace parent-child logic.
+      - e.g., If API calls DB in traces, an edge must exist in Topology.
+    
+    # 2. Data Consistency Checks
+    - Correlation:
+      - Select a time range with a CPU spike.
+      - Drill down to Traces: Should see spans with high latency or errors at that timestamp.
+      - Drill down to Logs: Filter by that TraceID; logs must exist and timestamp must match.
+    
+    # 3. Performance Benchmarks
+    - Log Rendering:
+      - Generate 10,000 log entries.
+      - Scroll rapidly. Frame rate must stay > 30fps (verify Virtual Scroller).
+    - Chart Updates:
+      - Change time range from "Last 15m" to "Last 24h".
+      - All charts must update within < 500ms.
+
+    # 4. Responsiveness
+    - Test Layout at 1920x1080 (Desktop) and 1366x768 (Laptop).
+    - Panels should resize; charts should call .resize() and refill containers.
+
+  # SECTION 4: Environment & Dependencies
+  environment_setup: |
+    # Core Framework & Build
+    - Node.js >= 16.0.0
+    - Vue 3.x (Composition API)
+    - Vite 4.x or 5.x
+    - TypeScript 5.x
+
+    # State & Routing
+    - pinia >= 2.1
+    - vue-router >= 4.2
+
+    # UI & Visualization Libraries
+    - element-plus (UI Components)
+    - echarts >= 5.4 (Charting engine)
+    - @antv/g6 (Topology graph)
+    - vue-virtual-scroller (High perf lists)
+    - sass (CSS Preprocessor)
+    - dayjs (Date manipulation)
+
+    # Dev Tools
+    - @types/node
+    - @vitejs/plugin-vue
+
+    # Installation
+    # npm install vue pinia vue-router element-plus echarts @antv/g6 vue-virtual-scroller dayjs sass
+
+  # SECTION 5: Implementation Strategy
+  implementation_strategy: |
+    # Phase 1: Skeleton & Theming (Day 1)
+    1. Initialize Vite project with Vue/TS.
+    2. Setup SCSS variables with the specific Hex codes (#0b0c0e, etc.).
+    3. Create MainLayout with Sidebar and generic "PageContainer".
+    4. Implement Global Time Picker (UI only).
+
+    # Phase 2: The Mock Engine (Day 2)
+    1. Implement `mathUtils.ts` (Sine wave generator).
+    2. Implement `traceGenerator.ts` (Recursive span tree).
+    3. Verify data output in browser console (ensure dates and IDs align).
+
+    # Phase 3: Dashboard & Metrics (Day 3)
+    1. Create `BaseEChart.vue` wrapper.
+    2. Build "Overview" page: 4 metric cards + 1 main trend chart.
+    3. Wire charts to `mathUtils` via `useMockData`.
+
+    # Phase 4: Tracing & Topology (Day 4)
+    1. Build `ServiceGraph.vue` using G6 (Nodes = Services).
+    2. Build `TraceGantt.vue` (Waterfall chart).
+    3. Create Trace List view with status coloring (Green/Red).
+
+    # Phase 5: Logs & Integration (Day 5)
+    1. Implement `LogStream.vue` with virtual scrolling.
+    2. Implement the "Drill-Down" logic:
+       - Click Trace -> Go to Logs (filter by TraceID).
+    3. Final Polish: Add loading skeletons and transitions.
+
+    # Phase 6: Documentation
+    1. Write README.md with setup instructions.
+    2. Generate requirements.txt.
+```

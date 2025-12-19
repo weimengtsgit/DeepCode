@@ -1,0 +1,103 @@
+import { defineStore } from 'pinia';
+import { ref, computed } from 'vue';
+import { mockApi } from '@/mock';
+import type { MetricPoint, Trace } from '@/mock/definitions';
+
+export const useDataStore = defineStore('data', () => {
+  // State
+  const cpuMetrics = ref<MetricPoint[]>([]);
+  const memoryMetrics = ref<MetricPoint[]>([]);
+  const latencyMetrics = ref<MetricPoint[]>([]);
+  
+  const traces = ref<Trace[]>([]);
+  const selectedTrace = ref<Trace | null>(null);
+  
+  const isLoadingMetrics = ref(false);
+  const isLoadingTraces = ref(false);
+  const isLoadingTraceDetails = ref(false);
+  
+  const error = ref<string | null>(null);
+
+  // Getters
+  const traceCount = computed(() => traces.value.length);
+  const errorTraceCount = computed(() => 
+    traces.value.filter(t => t.errorCount > 0).length
+  );
+  const avgDuration = computed(() => {
+    if (traces.value.length === 0) return 0;
+    const total = traces.value.reduce((acc, t) => acc + (t.totalDuration || t.duration || 0), 0);
+    return Math.round(total / traces.value.length);
+  });
+
+  // Actions
+  async function fetchMetrics(start: Date, end: Date) {
+    isLoadingMetrics.value = true;
+    error.value = null;
+    try {
+      const data = await mockApi.fetchMetrics(start, end);
+      cpuMetrics.value = data.cpu;
+      memoryMetrics.value = data.memory;
+      latencyMetrics.value = data.latency;
+    } catch (e) {
+      console.error('Failed to fetch metrics:', e);
+      error.value = 'Failed to load metrics data';
+    } finally {
+      isLoadingMetrics.value = false;
+    }
+  }
+
+  async function fetchTraces(start: Date, end: Date) {
+    isLoadingTraces.value = true;
+    try {
+      const data = await mockApi.fetchTraces(start, end);
+      traces.value = data;
+    } catch (e) {
+      console.error('Failed to fetch traces:', e);
+      // Don't overwrite error if metrics failed, just log
+    } finally {
+      isLoadingTraces.value = false;
+    }
+  }
+
+  async function fetchTraceById(traceId: string) {
+    isLoadingTraceDetails.value = true;
+    selectedTrace.value = null;
+    try {
+      const data = await mockApi.fetchTraceById(traceId);
+      selectedTrace.value = data;
+    } catch (e) {
+      console.error(`Failed to fetch trace ${traceId}:`, e);
+      error.value = `Failed to load trace ${traceId}`;
+    } finally {
+      isLoadingTraceDetails.value = false;
+    }
+  }
+
+  function setSelectedTrace(trace: Trace | null) {
+    // Directly use the trace from the list to ensure data consistency
+    // No need to copy - we want the exact same data reference
+    selectedTrace.value = trace;
+  }
+
+  return {
+    // State
+    cpuMetrics,
+    memoryMetrics,
+    latencyMetrics,
+    traces,
+    selectedTrace,
+    isLoadingMetrics,
+    isLoadingTraces,
+    isLoadingTraceDetails,
+    error,
+    // Getters
+    traceCount,
+    errorTraceCount,
+    avgDuration,
+    // Actions
+    fetchMetrics,
+    fetchTraces,
+    fetchTraceById,
+    setSelectedTrace
+  };
+});
